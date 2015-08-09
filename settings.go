@@ -63,9 +63,12 @@ func (this *Settings) SetDefault() error {
 
 func (this *Settings) Value(key string, defaultVal interface{}) interface{} {
 	var result interface{}
-	err := json.Unmarshal(*this.data[key], &result)
-	if err != nil {
-		return defaultVal
-	} 
-	return result
+	d, ex := this.data[key]
+	if ex {
+		err := json.Unmarshal(*d, &result)
+		if err == nil {
+			return result
+		} 
+	}
+	return defaultVal
 }
