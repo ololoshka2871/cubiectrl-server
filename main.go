@@ -14,7 +14,7 @@ func main() {
 	}
 	log.Println("Starting modbus..")
 	port, ok1 := settings.Value("port", "/dev/ttyS0").(string)
-	baudRate, ok2 := settings.Value("boudRate", "57600").(int)
+	baudRate, ok2 := settings.Value("boudRate", 57600).(int)
 	if ok1 && ok2 {
 		resChan, err := StartModbusClient(port, baudRate)
 		if err != nil {
