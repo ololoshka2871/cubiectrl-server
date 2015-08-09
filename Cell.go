@@ -71,5 +71,14 @@ func (this *Cell) Read(ctx *serial.Port) error {
 		return readErr
 	}
 	this.value = readResult[3:len(readResult) - 2]
+	if this.CellType == InputRegister || this.CellType == HoldingRegister {
+		if len(this.value) % 2 == 0 {
+			for i := 0; i < len(this.value); i+= 2 {
+				t := this.value[i]
+				this.value[i] = this.value[i + 1]
+				this.value[i + 1] = t
+			}
+		}
+	}
 	return nil
 }

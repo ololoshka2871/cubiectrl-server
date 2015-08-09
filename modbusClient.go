@@ -91,7 +91,7 @@ func StartModbusClient(serialPort string, baudRate int, RTS_Pin string) (<-chan 
 }
 
 func BuildCellsTable() []Cell {
-	result := make([]Cell, 4 * 2)
+	result := make([]Cell, 10)
 	
 	result[0] = Cell{Name : "A0", DevAddr : 4, CellType : HoldingRegister, CellLen_mbCells : 2, CellStartAddr : 0x0020}
     result[1] = Cell{Name : "A1", DevAddr : 4, CellType : HoldingRegister, CellLen_mbCells : 2, CellStartAddr : 0x0022}
