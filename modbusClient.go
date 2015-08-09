@@ -17,7 +17,10 @@ type RWControlPin struct {
 	valueFile *os.File
 }
 
-func NewRWControlPin(direction, value string) (*RWControlPin, error) {
+func NewRWControlPin(pin string) (*RWControlPin, error) {
+
+	direction := "/sys/class/gpio/" + pin + "/direction"
+	value := "/sys/class/gpio/" + pin + "/value"
 
 	valueFile, err := os.OpenFile(value, os.O_WRONLY, 0664)
 	if err != nil {
@@ -55,11 +58,18 @@ func (this *RWControlPin) WriteHook(_ io.ReadWriteCloser, newval bool) {
         }
 }
 
-func StartModbusClient(serialPort string, baudRate int) (<-chan Cell, error) {
+func StartModbusClient(serialPort string, baudRate int, RTS_Pin string) (<-chan Cell, error) {
 	ctx, cerr := modbusclient.ConnectRTU(serialPort, baudRate)
 	if cerr != nil {
 		return nil, cerr
 	} else {
+		hook, err := NewRWControlPin(RTS_Pin)
+		if err != nil { 
+			panic(err.Error()) 
+		} else {
+			modbusclient.SendHook = hook
+		}
+		
 		cells := BuildCellsTable()
 		resultChan := make(chan Cell)
 		

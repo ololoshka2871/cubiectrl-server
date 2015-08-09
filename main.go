@@ -15,8 +15,9 @@ func main() {
 	log.Println("Starting modbus..")
 	port, ok1 := settings.Value("port", "/dev/ttyS0").(string)
 	baudRate, ok2 := settings.Value("boudRate", 57600).(int)
-	if ok1 && ok2 {
-		resChan, err := StartModbusClient(port, baudRate)
+	rtsPin, ok3 := settings.Value("RtsPin", "gpio3_pg8").(string)
+	if ok1 && ok2 && ok3 {
+		resChan, err := StartModbusClient(port, baudRate, rtsPin)
 		if err != nil {
 			log.Fatal(err)
 		} else {

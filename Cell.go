@@ -58,8 +58,10 @@ func (this *Cell) Read(ctx *serial.Port) error {
 	                        this.CellStartAddr,
 	                        this.CellLen_mbCells,
 	                        MBTimeout, MBDebug)
-	if readErr != nil && MBDebug {
-		log.Printf("Read error: dev=%#X, Cell=%#H", this.DevAddr, this.CellStartAddr)
+	if readErr != nil {
+		if MBDebug {
+			log.Printf("Read error: dev=%#x, Cell=%#x", this.DevAddr, this.CellStartAddr)
+		}
 		return readErr
 	}
 	this.value = readResult[3:len(readResult) - 2]
