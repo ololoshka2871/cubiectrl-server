@@ -32,7 +32,7 @@ func main() {
 					val, err := v.valueAsFloat()
 					data4server := cubiectrl.CellData{Name : v.Name}
 					if err != nil {
-						data4server.Error = err
+						data4server.Error = true
 					} else {
 						data4server.Value = val
 					}

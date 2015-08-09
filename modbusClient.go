@@ -78,10 +78,8 @@ func StartModbusClient(serialPort string, baudRate int, RTS_Pin string) (<-chan 
 				// update thread
 				time.Sleep(updateInterval)
 				for _, cell := range cells {
-					err := cell.Read(ctx)
-					if err == nil {
-						resultChan <- cell
-					}
+					cell.Read(ctx)
+					resultChan <- cell
 				}
 			}
 		}(cells, 100 * time.Millisecond)
