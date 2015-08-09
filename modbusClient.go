@@ -91,15 +91,16 @@ func StartModbusClient(serialPort string, baudRate int, RTS_Pin string) (<-chan 
 func BuildCellsTable() []Cell {
 	result := make([]Cell, 4 * 2)
 	
-	result[0] = Cell{Name : "Cell1", DevAddr : 4, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0}
-	result[1] = Cell{Name : "Cell2", DevAddr : 4, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 2}
+	result[0] = Cell{Name : "Cell1", DevAddr : 4, CellType : HoldingRegister, CellLen_mbCells : 2, CellStartAddr : 0x0020}
+	result[1] = Cell{Name : "Cell2", DevAddr : 4, CellType : HoldingRegister, CellLen_mbCells : 2, CellStartAddr : 0x0022}
+	/*
 	result[2] = Cell{Name : "Cell3", DevAddr : 4, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 4}
 	result[3] = Cell{Name : "Cell4", DevAddr : 4, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 6}
-	
+
 	result[4] = Cell{Name : "Cell5", DevAddr : 4, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0}
 	result[5] = Cell{Name : "Cell6", DevAddr : 4, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 2}
 	result[6] = Cell{Name : "Cell7", DevAddr : 4, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 4}
 	result[7] = Cell{Name : "Cell8", DevAddr : 4, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 6}
-	
+	*/
 	return result
 }
