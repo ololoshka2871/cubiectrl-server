@@ -22,6 +22,7 @@ const (
 )
 
 type Cell struct {
+	Name	string
 	DevAddr byte
 	CellType int
 	CellStartAddr uint16
