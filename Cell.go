@@ -8,6 +8,7 @@ import (
     "math"
     "errors"
     "log"
+    "fmt"
 )
 
 const (
@@ -58,6 +59,10 @@ func (this *Cell) Read(ctx *serial.Port) error {
 	                        this.CellStartAddr,
 	                        this.CellLen_mbCells,
 	                        MBTimeout, MBDebug)
+	if MBDebug {
+		log.Println(fmt.Sprintf("Rx: %x", readResult))
+	}
+	
 	if readErr != nil {
 		if MBDebug {
 			log.Printf("Read error: dev=%#x, Cell=%#x, error=%v", this.DevAddr, this.CellStartAddr, readErr)
