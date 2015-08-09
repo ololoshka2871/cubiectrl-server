@@ -51,7 +51,7 @@ func main() {
 	} 
 	srv := cubiectrl.NewServer(srvPort, dataToServerChan)
 	if err := srv.ListenAndServe(); err != nil {
-		panic("server failed to start")
+		panic("server failed to start: " + err.Error())
 	}
 }
 
