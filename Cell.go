@@ -35,7 +35,7 @@ func (this *Cell) valueAsFloat() (float32, error) {
 	if len(this.value) != 4 {
 		return 0.0, errors.New("sizeof(Value) != sizeof(float)") 
 	}
-	bits := binary.BigEndian.Uint32(this.value)
+	bits := binary.LittleEndian.Uint32(this.value)
     res := math.Float32frombits(bits)
     return res, nil
 }
