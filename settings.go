@@ -77,6 +77,11 @@ func (this *Settings) Value(key string, defaultVal interface{}) interface{} {
 }
 
 func (this *Settings) SetValue(key string, Val interface{}) error {
-	fmt.Printf("%s = %v\n", key, Val)
-	return nil
+	if v, e := json.Marshal(Val); e != nil {
+		t := json.RawMessage(v)
+		this.data[key] = &t
+		return nil
+	} else {
+		return e
+	}
 }
