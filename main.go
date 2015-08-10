@@ -18,8 +18,8 @@ func main() {
 		panic("Failed to create settings")
 	}
 	log.Println("Starting modbus..")
-	port, ok1 := settings.Value("port", "/dev/ttyS0").(string)
-	baudRate, ok2 := settings.Value("boudRate", 57600).(int)
+	port, ok1 := settings.Value("Port", "/dev/ttyS0").(string)
+	baudRate, ok2 := settings.Value("BoudRate", 57600).(int)
 	rtsPin, ok3 := settings.Value("RtsPin", "gpio3_pg8").(string)
 	if ok1 && ok2 && ok3 {
 		dataToServerChan = make(chan cubiectrl.CellData)
