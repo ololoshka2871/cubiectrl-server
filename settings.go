@@ -48,6 +48,7 @@ func createPath(path string) {
 func (this *Settings) Sync() error {
 	jsonData, err := json.Marshal(this.data)
 	if err != nil {
+		fmt.Println(this.data)
 		return err
 	}
 	createPath(filepath.Dir(this.filename))
