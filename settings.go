@@ -80,7 +80,8 @@ func (this *Settings) SetValue(key string, Val interface{}) error {
 	if v, e := json.Marshal(Val); e != nil {
 		t := json.RawMessage(v)
 		this.data[key] = &t
-		return nil
+		
+		return this.Sync()
 	} else {
 		return e
 	}
