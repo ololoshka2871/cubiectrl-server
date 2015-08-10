@@ -4,6 +4,7 @@ import (
 	"bitbucket.org/Olololshka/cubiectrl"
 	"log"
 	"os"
+	"time"
 )
 
 func main() {
@@ -30,7 +31,7 @@ func main() {
 			go func(c <-chan Cell) {
 				for v := range c {
 					val, err := v.valueAsFloat()
-					data4server := cubiectrl.CellData{Name : v.Name}
+					data4server := cubiectrl.CellData{ Name : v.Name, Timestamp : time.Now() }
 					if err != nil {
 						data4server.Error = true
 					} else {
