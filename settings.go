@@ -75,3 +75,8 @@ func (this *Settings) Value(key string, defaultVal interface{}) interface{} {
 	}
 	return defaultVal
 }
+
+func (this *Settings) SetValue(key string, Val interface{}) error {
+	fmt.Printf("%s = %v", key, Val)
+	return nil
+}
