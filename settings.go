@@ -32,8 +32,11 @@ func NewSettings(jsonFile string) (*Settings, error) {
 }
 
 func createPath(path string) {
-	if _, err := os.Stat(filepath.Dir(path)); os.IsNotExist(err) {
+	_, err := os.Stat(filepath.Dir(path));
+	if os.IsNotExist(err) {
 		createPath(filepath.Dir(path))
+	} else if err == nil {
+		return
 	} else {
 		err = os.Mkdir(path, 0775)
 		if err != nil {
