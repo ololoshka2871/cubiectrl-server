@@ -79,8 +79,7 @@ func (this *Settings) Value(key string, defaultVal interface{}) interface{} {
 
 func (this *Settings) SetValue(key string, Val interface{}) error {
 	if v, e := json.Marshal(Val); e == nil {
-		_key, _ := json.Marshal(key)
-		t := json.RawMessage(string(_key) + ":" + string(v))
+		t := json.RawMessage(string(v))
 		this.data[key] = &t
 		
 		return this.Sync()
