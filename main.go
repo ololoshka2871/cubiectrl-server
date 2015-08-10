@@ -24,7 +24,7 @@ func main() {
 	if ok1 && ok2 && ok3 {
 		dataToServerChan = make(chan cubiectrl.CellData)
 		
-		resChan, err := StartModbusClient(port, baudRate, rtsPin)
+		resChan, err := StartModbusClient(port, baudRate, rtsPin, settings)
 		if err != nil {
 			log.Fatal(err)
 		} else {
@@ -50,7 +50,7 @@ func main() {
 	if !ok1 {
 		panic("Settings port error")
 	} 
-	srv := cubiectrl.NewServer(srvPort, dataToServerChan)
+	srv := cubiectrl.NewServer(srvPort, dataToServerChan, settings) 
 	if err := srv.ListenAndServe(); err != nil {
 		panic("server failed to start: " + err.Error())
 	}

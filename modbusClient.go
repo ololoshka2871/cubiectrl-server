@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/ololoshka2871/go-modbus"
 	"github.com/tarm/serial"
+	"bitbucket.org/Olololshka/cubiectrl"
 	"os"
 	"io"
 	"time"
@@ -58,7 +59,7 @@ func (this *RWControlPin) WriteHook(_ io.ReadWriteCloser, newval bool) {
         }
 }
 
-func StartModbusClient(serialPort string, baudRate int, RTS_Pin string) (<-chan Cell, error) {
+func StartModbusClient(serialPort string, baudRate int, RTS_Pin string, settings cubiectrl.SettingsHolder) (<-chan Cell, error) {
 	ctx, cerr := modbusclient.ConnectRTU(serialPort, baudRate)
 	if cerr != nil {
 		return nil, cerr
@@ -73,10 +74,15 @@ func StartModbusClient(serialPort string, baudRate int, RTS_Pin string) (<-chan 
 		cells := BuildCellsTable()
 		resultChan := make(chan Cell)
 		
-		go func(cells []Cell, updateInterval time.Duration) {
+		go func(cells []Cell) {
 			for {
 				// update thread
-				time.Sleep(updateInterval)
+				val, ok := settings.Value("UpdateDelay", 100).(time.Duration)
+				if !ok || val < 10 {
+					val = 100
+				}
+				val *= time.Millisecond
+				time.Sleep(val)
 				for _, cell := range cells {
 					if cell.Name != "" {
 						cell.Read(ctx)
@@ -84,7 +90,7 @@ func StartModbusClient(serialPort string, baudRate int, RTS_Pin string) (<-chan 
 					}
 				}
 			}
-		}(cells, 100 * time.Millisecond)
+		}(cells)
 		
 		return resultChan, nil
 	}
