@@ -77,12 +77,11 @@ func StartModbusClient(serialPort string, baudRate int, RTS_Pin string, settings
 		go func(cells []Cell) {
 			for {
 				// update thread
-				val, ok := settings.Value("UpdateDelay", 100).(time.Duration)
+				val, ok := settings.Value("UpdateDelay", 100).(float64)
 				if !ok || val < 10 {
 					val = 100
 				}
-				val *= time.Millisecond
-				time.Sleep(val)
+				time.Sleep(time.Duration(val) * time.Millisecond)
 				for _, cell := range cells {
 					if cell.Name != "" {
 						cell.Read(ctx)
