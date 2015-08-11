@@ -1,7 +1,6 @@
 package main 
 
 import (
-	"bitbucket.org/Olololshka/cubiectrl"
 	"log"
 	"os"
 	"time"
@@ -9,7 +8,7 @@ import (
 
 func main() {
 	var (
-		dataToServerChan chan cubiectrl.CellData
+		dataToServerChan chan CellData
 	)
 	
 	log.Println("Reading settings..")
@@ -22,7 +21,7 @@ func main() {
 	baudRate, ok2 := settings.Value("BoudRate", 57600).(float64)
 	rtsPin, ok3 := settings.Value("RtsPin", "gpio3_pg8").(string)
 	if ok1 && ok2 && ok3 {
-		dataToServerChan = make(chan cubiectrl.CellData)
+		dataToServerChan = make(chan CellData)
 		
 		resChan, err := StartModbusClient(port, int(baudRate), rtsPin, settings)
 		if err != nil {
@@ -31,7 +30,7 @@ func main() {
 			go func(c <-chan Cell) {
 				for v := range c {
 					val, err := v.valueAsFloat()
-					data4server := cubiectrl.CellData{ Name : v.Name, Timestamp : time.Now() }
+					data4server := CellData{ Name : v.Name, Timestamp : time.Now() }
 					if err != nil {
 						data4server.Error = true
 					} else {
@@ -50,7 +49,7 @@ func main() {
 	if !ok1 {
 		panic("Settings port error")
 	} 
-	srv := cubiectrl.NewServer(srvPort, dataToServerChan, settings) 
+	srv := NewServer(srvPort, dataToServerChan, settings) 
 	if err := srv.ListenAndServe(); err != nil {
 		panic("server failed to start: " + err.Error())
 	}

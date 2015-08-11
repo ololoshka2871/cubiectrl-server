@@ -1,0 +1,83 @@
+{{ define "index" }}
+
+{{ template "header" }}
+
+<!-- Main -->
+<div id="main">
+	<div class="shell">
+		<div id="sidebar">
+			<div class="text-container">
+				<h2 class="mesure_header">Температуры</h2>
+				<div id="plot_temp" style="height:270px;"></div>
+				<div class="cl">&nbsp;</div>
+				<h2 class="mesure_header">Обороты</h2>
+				<div id="plot_spin" style="height:270px;"></div>
+			</div>
+		</div>
+		<div id="content">
+			<div class="col">
+				<div class="post">
+					<h2>Настройка</h2>
+					<img src="asserts/css/images/post-image4.gif" alt="" class="right" />
+					<form name="test" method="post" id="settingsForm">
+						<p>
+							<b>Видео на малом дисплее:</b><br>
+							<input class="lineedit" type="text" size="80" name="SmallDispFileName" value="{{.SmallDispFileName}}">
+						</p>
+						<p>
+							<b>Видео на большом дисплее:</b><br>
+							<input class="lineedit" type="text" size="80" name="BigDispFileName" value="{{.BigDispFileName}}">
+						</p>
+						<p>
+							<b>Порт датчиков:</b><br>
+							<input class="lineedit" type="text" size="40" name="Port" value="{{.Port}}">
+						</p>
+						<p>
+							<b>Скорость передачи:</b><br>
+							<input class="lineedit" type="text" size="10" name="BoudRate" value="{{.BoudRate}}">
+						</p>
+						<p>
+							<b>Порт управления R/W RS485:</b><br>
+							<input class="lineedit" type="text" size="20" name="RtsPin" value="{{.RtsPin}}">
+						</p>
+						<p>
+							<b>Интервал попроса датчиков</b><br>
+							<input class="lineedit" type="text" size="10" name="UpdateDelay" value="{{.UpdateDelay}}">
+						</p>
+						<div class="buttonplace">
+							<input class="button" type="button" size="20" id="submitBtn" value="Применить">
+							<input class="button" type="reset" size="20" id="resetBtn">
+						</div>
+					</form>
+					<div class="cl">&nbsp;</div>
+				</div>
+			</div>
+			<div class="col cols-2">
+				<div class="post">
+					<h2>Управление плеерами</h2>
+					<p>
+						<b>Плеер малого дисплея</b><br>
+						<input class="button" type="button" size="20" id="Play_small" value="&#9654;">
+						<input class="button" type="button" size="20" id="Stop_small" value="&#9611;">
+					</p>
+					<p>
+						<b>Плеер Большого дисплея</b><br>
+						<input class="button" type="button" size="20" id="Play_big" value="&#9654;">
+						<input class="button" type="button" size="20" id="Stop_big" value="&#9611;">
+					</p>
+					<div class="cl">&nbsp;</div>
+				</div>
+			</div>
+			<div class="col cols-2 last">
+				<div class="post">
+					<h2>Сменить вид</h2>
+					<div class="cl">&nbsp;</div>
+				</div>
+			</div>
+		</div>
+		<div class="cl">&nbsp;</div>
+	</div>
+</div>
+<!-- End Main -->
+
+{{ end }}
