@@ -79,7 +79,7 @@ function rereadSettings() {
 					if (key == "OK") 
 						continue
 					if (key == "State") {
-						$("#change_mode").value(v_data[key])
+						$("#change_mode").val(v_data[key])
 						continue
 					}
 					$("[name='" + key +"']").val(v_data[key])
