@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+var settings *Settings
+
 func main() {
 	var (
 		dataToServerChan chan CellData

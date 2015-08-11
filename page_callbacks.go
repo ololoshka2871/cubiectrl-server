@@ -11,6 +11,11 @@ import (
 	"log"
 	"strings"
 	"strconv"
+	"errors"
+)
+
+const (
+	OkAnsver = "OK"
 )
 
 var settingsmap = map[string]interface{} { "SmallDispFileName" : "",
@@ -104,19 +109,53 @@ func varsJsonHandlr(w http.ResponseWriter, r *http.Request) {
 			if err := ApplySettings(r.URL.Query()); err != nil {
 				fmt.Fprintf(w, err.Error())
 			} else {
-				fmt.Fprintf(w, "OK")
+				fmt.Fprintf(w, OkAnsver)
 			}
 		case "resetSettings":
 			err := settingsValues.SetDefault()
 			if err != nil {
 				fmt.Fprintf(w, err.Error())
 			} else {
-				fmt.Fprintf(w, "OK")
+				fmt.Fprintf(w, OkAnsver)
 			}
+		case "DisplayCtrl":
+			if err := DisplayCtrl(r.URL.Query()); err != nil {
+				fmt.Fprint(w, err.Error())
+			}
+			fmt.Fprint(w, OkAnsver)
 		default :
 			fmt.Fprintf(w, "No requestParameters")
 			log.Printf("Unknown api request: %s", r.Form)
 	}
+}
+
+func DisplayCtrl(values url.Values) error {
+	switch values.Get("Display") {
+		case "small":
+			switch values.Get("ctrl") {
+				case "play":
+					return ControlSmallDisplay(true)
+				case "stop":
+					return ControlSmallDisplay(false)
+				default:
+					return errors.New("No control action specified (ctrl=play|stop)")
+			}
+		case "big":
+			switch values.Get("ctrl") {
+				case "play":
+					return ControlBigDisplay(ShowVideo_bigDisplay)
+				case "stop":
+					return ControlBigDisplay(Diable_bigDisplay)
+				case "values":
+					return ControlBigDisplay(ShowQMLForm_bigDisplay)
+				default:
+					return errors.New("No control action specified (ctrl=play|stop|values)")
+			}
+		default:
+			return errors.New("No display selected (Display=small|big)")
+	}
+	
+	return nil
 }
 
 func ApplySettings(values url.Values) error {
