@@ -78,6 +78,10 @@ function rereadSettings() {
 				for (key in v_data) {
 					if (key == "OK") 
 						continue
+					if (key == "State") {
+						$("#change_mode").value(v_data[key])
+						continue
+					}
 					$("[name='" + key +"']").val(v_data[key])
 				}
 			}
@@ -180,6 +184,39 @@ function playCtrl() {
 	});
 }
 
+function toggleMode() {
+	switch $(this).val() {
+	case "Показать видео":
+		$.ajax({
+			url: "/data.api",
+			dataType: "text",
+			method : "POST",
+			cache: false,
+			data : {req : "DisplayCtrl", Display : "big", ctrl: "play"},
+			success : function(v_data) {
+				if (v_data != "OK")
+					alert("Error: " + v_data)
+				else
+					rereadSettings()
+			});
+		break;
+	case "Показать значения":
+		$.ajax({
+			url: "/data.api",
+			dataType: "text",
+			method : "POST",
+			cache: false,
+			data : {req : "DisplayCtrl", Display : "big", ctrl: "values"},
+			success : function(v_data) {
+				if (v_data != "OK")
+					alert("Error: " + v_data)
+				else
+					rereadSettings()
+			});
+		break;
+	}
+}
+
 jQuery(document).ready(function($){
 	// create plots
 	plot_temp = $.plot("#plot_temp", [[[]]], options);
@@ -189,6 +226,7 @@ jQuery(document).ready(function($){
 	$("#resetBtn").click(resetSettings);
 	
 	$("[name*='Play'], [name*='Stop']").click(playCtrl)
+	$("#change_mode").click(toggleMode)
 
 	setInterval(update_mesureValues, 500)
 });

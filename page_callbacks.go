@@ -40,6 +40,7 @@ type IndexPageParams struct {
 	BoudRate int
 	RtsPin string
 	UpdateDelay int
+	State		string
 }
 
 type __Settings struct {
@@ -185,6 +186,8 @@ func ApplySettings(values url.Values) error {
 	return nil
 }
 
+var start2name = [3]string{"Показать видео", "Показать значения", "Показать видео" }
+
 func getParamsMap() *IndexPageParams {
 	return &IndexPageParams{
     	SmallDispFileName : settingsValues.Value("SmallDispFileName", settingsmap["SmallDispFileName"]).(string),
@@ -193,6 +196,7 @@ func getParamsMap() *IndexPageParams {
 		BoudRate : int(settingsValues.Value("BoudRate", settingsmap["BoudRate"]).(float64)),
 		RtsPin : settingsValues.Value("RtsPin", settingsmap["RtsPin"]).(string),
 		UpdateDelay : int(settingsValues.Value("UpdateDelay", settingsmap["UpdateDelay"]).(float64)),
+		State : start2name[CurrentDisplayState.BigDisplayMode],
     	}
 }
 
