@@ -16,7 +16,7 @@ const (
 	Small_Display = "DISPLAY=:0.1"
 )
 
-var PlayerArgsCommon = []string{"--fs", "--loop=inf"}
+var PlayerArgsCommon = []string{"--loop=inf"}
 
 type tCurrentDisplayState struct {
 	SmallDisplayMode bool
@@ -44,10 +44,8 @@ func ControlSmallDisplay(enable bool) error {
 			} else {
 				PlayerArgs = append(PlayerArgsCommon, media)
 			}
-			w, _, _ := os.Pipe()
-			if proc, err :=	os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env, Files: []*os.File{w, nil, nil}}); err == nil {
+			if proc, err :=	os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env}); err == nil {
 				CurrentDisplayState.SmallDisplayPlayerProcess = proc
-				w.Write([]byte{'f'})
 			} else {
 				log.Println("Failed to start plaing on SMALL display")
 				return err
@@ -104,9 +102,8 @@ func ControlBigDisplay(ctrl int) error {
 				} else {
 					PlayerArgs = append(PlayerArgsCommon, media)
 				}
-				w, _, _ := os.Pipe()
-				if proc, err :=	os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env, Files: []*os.File{w, nil, nil}}); err == nil {
-					w.Write([]byte{'f'})
+
+				if proc, err :=	os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env}); err == nil {
 					CurrentDisplayState.BigDisplayPlayerProcess = proc
 				} else {
 					log.Println("Failed to start plaing on BIG display")
