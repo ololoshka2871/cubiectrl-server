@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"errors"
+	"log"
 )
 
 const (
@@ -56,6 +57,11 @@ func ControlSmallDisplay(enable bool) error {
 			}
 		}
 		CurrentDisplayState.SmallDisplayMode = enable
+		if enable {
+			log.Println("Start playing on small display")
+		} else {
+			log.Println("Stop playing on small display")
+		}
 	}
 	return nil
 }
