@@ -85,7 +85,6 @@ func ControlBigDisplay(ctrl int) error {
 					CurrentDisplayState.BigDisplayValuesProcess = nil
 				}
 				log.Println("Big Display disabled")
-				return nil
 				
 			case ShowVideo_bigDisplay:
 				if CurrentDisplayState.BigDisplayValuesProcess != nil {
@@ -111,7 +110,6 @@ func ControlBigDisplay(ctrl int) error {
 				}
 				
 				log.Println("Start playing on Big display")
-				return nil
 				
 			case ShowQMLForm_bigDisplay:
 				if CurrentDisplayState.BigDisplayPlayerProcess != nil {
@@ -124,7 +122,6 @@ func ControlBigDisplay(ctrl int) error {
 				}
 				
 				log.Println("Displaing values on big display")
-				return nil
 				
 			default :
 				return errors.New("Incorrect ctrl request")
