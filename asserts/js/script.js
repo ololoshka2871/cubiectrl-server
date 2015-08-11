@@ -23,52 +23,6 @@ var options = {
 var graphLen = 50;
 
 function update_mesureValues() {	
-	/*
-	$.ajax({
-		url: "/data.api",
-		dataType: "json",
-		method : "POST",
-		cache: false,
-		data : { "req" : "mesurment" },
-		success : function(v_data) {
-
-			// create data set
-			if 	(typeof plot === 'undefined') {	 
-				data = new Array();
-				for (var serie in v_data) {
-					data.push({ label : serie, data : [] })
-				}
-			} 
-			
-			// push new value
-			var i = 0;
-			for (var item in v_data) {
-				var serie = v_data[item];
-				data[i].data.push( serie["Error"] ? [null, null] :
-						[ Date.parse(serie["Timestamp"]), serie["Value"] ]
-				);
-				i++;
-			}
-
-			// shrink last value
-			if (data[0].data.length > 50) {
-				for (i in data) {
-					data[i].data.shift()
-				}
-			}
-			
-			// plot
-			if (typeof plot !== 'undefined') {
-				plot.setData(data);
-				plot.setupGrid();
-				plot.draw();
-			} else {
-				plot = $.plot("#plot", data, options);
-			}
-		}
-	});
-	*/
-	
 	$.ajax({
 		url: "/data.api",
 		dataType: "json",
@@ -187,6 +141,45 @@ function plotData(data, v_data, plot, options) {
 	plot.draw();
 }
 
+function playCtrl() {
+	var req = {
+			req : "DisplayCtrl",
+	};
+	
+	swich ($(this).attr('name')) {
+		case "Play_small":
+			req.Display = "small";
+			ctrl = "play";
+			break
+		case "Stop_small":
+			req.Display = "small";
+			ctrl = "stop";
+			break
+		case "Play_big":
+			req.Display = "big";
+			ctrl = "play";
+			break
+		case "Stop_big":
+			req.Display = "big";
+			ctrl = "stop";
+			break
+	}
+	
+	$.ajax({
+		url: "/data.api",
+		dataType: "text",
+		method : "POST",
+		cache: false,
+		data : req,
+		success : function(v_data) {
+			if (v_data != "OK")
+				alert("Error: " + v_data)
+			else
+				rereadSettings()
+		}
+	});
+}
+
 jQuery(document).ready(function($){
 	// create plots
 	plot_temp = $.plot("#plot_temp", [[[]]], options);
@@ -195,5 +188,7 @@ jQuery(document).ready(function($){
 	$("#submitBtn").click(sendSettings);
 	$("#resetBtn").click(resetSettings);
 	
+	$("[name*='Play'], [name*='Stop']").click(playCtrl)
+
 	setInterval(update_mesureValues, 500)
 });
