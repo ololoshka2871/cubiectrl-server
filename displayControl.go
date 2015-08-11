@@ -11,7 +11,7 @@ const (
 	ShowVideo_bigDisplay = 1
 	ShowQMLForm_bigDisplay = 2
 	
-	Player = "mpv"
+	Player = "/usr/bin/mpv"
 	Big_Display = "DISPLAY=:0.1"
 	Small_Display = "DISPLAY=:0.0"
 )
