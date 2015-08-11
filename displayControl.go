@@ -12,8 +12,8 @@ const (
 	ShowQMLForm_bigDisplay = 2
 	
 	Player = "/usr/bin/mpv"
-	Big_Display = "DISPLAY=:0.1"
-	Small_Display = "DISPLAY=:0.0"
+	Big_Display = "DISPLAY=:0.0"
+	Small_Display = "DISPLAY=:0.1"
 )
 
 var PlayerArgsCommon = []string{"--fs", "--loop=inf"}
