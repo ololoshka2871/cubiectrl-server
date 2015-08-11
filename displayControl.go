@@ -44,8 +44,8 @@ func ControlSmallDisplay(enable bool) error {
 			} else {
 				PlayerArgs = append(PlayerArgsCommon, media)
 			}
-			_, w, _ := os.Pipe()
-			if proc, err :=	os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env, Files: []*os.File{os.Stdin, w, nil}}); err == nil {
+			w, _, _ := os.Pipe()
+			if proc, err :=	os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env, Files: []*os.File{w, nil, nil}}); err == nil {
 				CurrentDisplayState.SmallDisplayPlayerProcess = proc
 				w.Write([]byte{'f'})
 			} else {
@@ -104,8 +104,8 @@ func ControlBigDisplay(ctrl int) error {
 				} else {
 					PlayerArgs = append(PlayerArgsCommon, media)
 				}
-				_, w, _ := os.Pipe()
-				if proc, err :=	os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env, Files: []*os.File{os.Stdin, w, nil}}); err == nil {
+				w, _, _ := os.Pipe()
+				if proc, err :=	os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env, Files: []*os.File{w, nil, nil}}); err == nil {
 					w.Write([]byte{'f'})
 					CurrentDisplayState.BigDisplayPlayerProcess = proc
 				} else {
