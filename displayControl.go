@@ -16,7 +16,7 @@ const (
 	Small_Display = "DISPLAY=:0.1"
 )
 
-var PlayerArgsCommon = []string{"", "--fs", "--loop=inf"}
+var PlayerArgsCommon = []string{Player, "--fs", "--loop=inf"}
 
 type tCurrentDisplayState struct {
 	SmallDisplayMode bool
