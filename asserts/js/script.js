@@ -146,7 +146,7 @@ function playCtrl() {
 			req : "DisplayCtrl",
 	};
 	
-	swich ($(this).attr('name')) {
+	switch ($(this).attr('name')) {
 		case "Play_small":
 			req.Display = "small";
 			ctrl = "play";
