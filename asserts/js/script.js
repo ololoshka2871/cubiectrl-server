@@ -149,19 +149,19 @@ function playCtrl() {
 	switch ($(this).attr('name')) {
 		case "Play_small":
 			req.Display = "small";
-			ctrl = "play";
+			req.ctrl = "play";
 			break
 		case "Stop_small":
 			req.Display = "small";
-			ctrl = "stop";
+			req.ctrl = "stop";
 			break
 		case "Play_big":
 			req.Display = "big";
-			ctrl = "play";
+			req.ctrl = "play";
 			break
 		case "Stop_big":
 			req.Display = "big";
-			ctrl = "stop";
+			req.ctrl = "stop";
 			break
 	}
 	
