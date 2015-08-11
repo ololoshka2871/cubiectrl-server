@@ -30,8 +30,8 @@ type tCurrentDisplayState struct {
 var CurrentDisplayState tCurrentDisplayState
 
 func StartDefault() {
-	//ControlSmallDisplay(true)
-	//ControlBigDisplay(ShowVideo_bigDisplay)
+	ControlSmallDisplay(true)
+	ControlBigDisplay(ShowVideo_bigDisplay)
 } 
 
 func ControlSmallDisplay(enable bool) error {
