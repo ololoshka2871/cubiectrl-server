@@ -198,7 +198,8 @@ function toggleMode() {
 						alert("Error: " + v_data)
 					else
 						rereadSettings()
-				});
+				}
+			});
 			break;
 		case "Показать значения":
 			$.ajax({
@@ -212,7 +213,8 @@ function toggleMode() {
 						alert("Error: " + v_data)
 					else
 						rereadSettings()
-				});
+				}
+			});
 			break;
 	}
 }
