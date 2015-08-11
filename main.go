@@ -19,6 +19,9 @@ func main() {
 		panic("Failed to create settings")
 	}
 	settings = s
+	
+	StartDefault()
+	
 	log.Println("Starting modbus..")
 	port, ok1 := settings.Value("Port", "/dev/ttyS0").(string)
 	baudRate, ok2 := settings.Value("BoudRate", 57600).(float64)
