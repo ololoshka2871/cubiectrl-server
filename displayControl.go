@@ -42,9 +42,10 @@ func ControlSmallDisplay(enable bool) error {
 			} else {
 				PlayerArgs = append(PlayerArgsCommon, media)
 			}
-			if proc, err :=	os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env}); err != nil {
+			if proc, err :=	os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env}); err == nil {
 				CurrentDisplayState.SmallDisplayPlayerProcess = proc
 			} else {
+				log.Println("Failed to start paing")
 				return err
 			}
 		} else {
@@ -53,7 +54,9 @@ func ControlSmallDisplay(enable bool) error {
 				CurrentDisplayState.SmallDisplayPlayerProcess = nil
 			} else {
 				CurrentDisplayState.SmallDisplayMode = false
-				return errors.New("Player not running")
+				S := "Player not running"
+				log.Println(S)
+				return errors.New(S)
 			}
 		}
 		CurrentDisplayState.SmallDisplayMode = enable

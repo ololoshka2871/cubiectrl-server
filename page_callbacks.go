@@ -121,6 +121,7 @@ func varsJsonHandlr(w http.ResponseWriter, r *http.Request) {
 		case "DisplayCtrl":
 			if err := DisplayCtrl(r.URL.Query()); err != nil {
 				fmt.Fprint(w, err.Error())
+				return
 			}
 			fmt.Fprint(w, OkAnsver)
 		default :
