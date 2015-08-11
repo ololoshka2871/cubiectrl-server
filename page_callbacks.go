@@ -107,16 +107,16 @@ func varsJsonHandlr(w http.ResponseWriter, r *http.Request) {
 				}
 		case "setSettings":
 			if err := ApplySettings(r.URL.Query()); err != nil {
-				fmt.Fprintf(w, err.Error())
+				fmt.Fprint(w, err.Error())
 			} else {
-				fmt.Fprintf(w, OkAnsver)
+				fmt.Fprint(w, OkAnsver)
 			}
 		case "resetSettings":
 			err := settingsValues.SetDefault()
 			if err != nil {
-				fmt.Fprintf(w, err.Error())
+				fmt.Fprint(w, err.Error())
 			} else {
-				fmt.Fprintf(w, OkAnsver)
+				fmt.Fprint(w, OkAnsver)
 			}
 		case "DisplayCtrl":
 			if err := DisplayCtrl(r.URL.Query()); err != nil {

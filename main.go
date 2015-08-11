@@ -14,10 +14,11 @@ func main() {
 	)
 	
 	log.Println("Reading settings..")
-	settings, err := NewSettings(os.Getenv("HOME") + "/.config/cubiectrl/cubiectrl.json")
+	s, err := NewSettings(os.Getenv("HOME") + "/.config/cubiectrl/cubiectrl.json")
 	if err != nil {
 		panic("Failed to create settings")
 	}
+	settings = s
 	log.Println("Starting modbus..")
 	port, ok1 := settings.Value("Port", "/dev/ttyS0").(string)
 	baudRate, ok2 := settings.Value("BoudRate", 57600).(float64)
