@@ -76,7 +76,7 @@ func patchPath(name1 string, names ...string) []string {
 func varsJsonHandlr(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Query().Get("req") {
 		case "mesurment":
-			log.Print("Sending mesurment")
+			//log.Print("Sending mesurment")
 			mtype := r.URL.Query().Get("type")
 			if mtype == "" {
 				err := json.NewEncoder(w).Encode(results)
