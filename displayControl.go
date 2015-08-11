@@ -44,8 +44,10 @@ func ControlSmallDisplay(enable bool) error {
 			} else {
 				PlayerArgs = append(PlayerArgsCommon, media)
 			}
-			if proc, err :=	os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env}); err == nil {
+			_, w, _ := os.Pipe()
+			if proc, err :=	os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env, Files: []*os.File{nil, w, os.Stderr}}); err == nil {
 				CurrentDisplayState.SmallDisplayPlayerProcess = proc
+				w.Write([]byte{'f'})
 			} else {
 				log.Println("Failed to start plaing on SMALL display")
 				return err
@@ -102,7 +104,9 @@ func ControlBigDisplay(ctrl int) error {
 				} else {
 					PlayerArgs = append(PlayerArgsCommon, media)
 				}
-				if proc, err :=	os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env}); err == nil {
+				_, w, _ := os.Pipe()
+				if proc, err :=	os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env, Files: []*os.File{nil, w, os.Stderr}}); err == nil {
+					w.Write([]byte{'f'})
 					CurrentDisplayState.BigDisplayPlayerProcess = proc
 				} else {
 					log.Println("Failed to start plaing on BIG display")
