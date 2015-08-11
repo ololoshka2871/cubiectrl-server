@@ -142,6 +142,7 @@ func DisplayCtrl(values url.Values) error {
 					return errors.New("No control action specified (ctrl=play|stop)")
 			}
 		case "big":
+			log.Print(values.Get("ctrl"))
 			switch values.Get("ctrl") {
 				case "play":
 					return ControlBigDisplay(ShowVideo_bigDisplay)

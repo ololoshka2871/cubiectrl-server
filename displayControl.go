@@ -110,7 +110,7 @@ func ControlBigDisplay(ctrl int) error {
 					return err
 				}
 				
-				log.Println("Start playing on small display")
+				log.Println("Start playing on Big display")
 				return nil
 				
 			case ShowQMLForm_bigDisplay:
