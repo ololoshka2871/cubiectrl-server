@@ -185,35 +185,35 @@ function playCtrl() {
 }
 
 function toggleMode() {
-	switch $(this).val() {
-	case "Показать видео":
-		$.ajax({
-			url: "/data.api",
-			dataType: "text",
-			method : "POST",
-			cache: false,
-			data : {req : "DisplayCtrl", Display : "big", ctrl: "play"},
-			success : function(v_data) {
-				if (v_data != "OK")
-					alert("Error: " + v_data)
-				else
-					rereadSettings()
-			});
-		break;
-	case "Показать значения":
-		$.ajax({
-			url: "/data.api",
-			dataType: "text",
-			method : "POST",
-			cache: false,
-			data : {req : "DisplayCtrl", Display : "big", ctrl: "values"},
-			success : function(v_data) {
-				if (v_data != "OK")
-					alert("Error: " + v_data)
-				else
-					rereadSettings()
-			});
-		break;
+	switch ($(this).val()) {
+		case "Показать видео":
+			$.ajax({
+				url: "/data.api",
+				dataType: "text",
+				method : "POST",
+				cache: false,
+				data : {req : "DisplayCtrl", Display : "big", ctrl: "play"},
+				success : function(v_data) {
+					if (v_data != "OK")
+						alert("Error: " + v_data)
+					else
+						rereadSettings()
+				});
+			break;
+		case "Показать значения":
+			$.ajax({
+				url: "/data.api",
+				dataType: "text",
+				method : "POST",
+				cache: false,
+				data : {req : "DisplayCtrl", Display : "big", ctrl: "values"},
+				success : function(v_data) {
+					if (v_data != "OK")
+						alert("Error: " + v_data)
+					else
+						rereadSettings()
+				});
+			break;
 	}
 }
 
