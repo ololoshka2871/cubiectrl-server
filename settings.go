@@ -32,12 +32,12 @@ func NewSettings(jsonFile string) (*Settings, error) {
 }
 
 func createPath(path string) {
-	_, err := os.Stat(filepath.Dir(path));
-	if os.IsNotExist(err) {
+	
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		// такого пути нету, повторить с уровнем ниже
 		createPath(filepath.Dir(path))
-	} else if err == nil {
-		return
-	} else {
+		
+		// теперь создаем каталон
 		err = os.Mkdir(path, 0775)
 		if err != nil {
 			panic(fmt.Sprintf("Failed to create %s : %s", path, err.Error()))

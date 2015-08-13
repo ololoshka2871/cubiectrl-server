@@ -16,7 +16,7 @@ func main() {
 	log.Println("Reading settings..")
 	s, err := NewSettings(os.Getenv("HOME") + "/.config/cubiectrl/cubiectrl.json")
 	if err != nil {
-		panic("Failed to create settings")
+		panic("Failed to create settings " + err.Error())
 	}
 	settings = s
 	
