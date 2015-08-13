@@ -4,6 +4,7 @@ import (
 	"os"
 	"errors"
 	"log"
+	"os/exec"
 )
 
 const (
@@ -12,8 +13,12 @@ const (
 	ShowQMLForm_bigDisplay = 2
 	
 	Player = "/usr/bin/mpv"
+	//QmlProgramm = "" /*TODO*/
 	Big_Display = "DISPLAY=:0.0"
 	Small_Display = "DISPLAY=:0.1"
+	
+	PauseKey = "p"
+	ToggleFSkey = "f"
 )
 
 var PlayerArgsCommon = []string{Player, "--fs", "--loop=inf"}
@@ -23,15 +28,33 @@ type tCurrentDisplayState struct {
 	BigDisplayMode int
 	
 	SmallDisplayPlayerProcess 	*os.Process
-	BigDisplayPlayerProcess 	*os.Process
-	BigDisplayValuesProcess		*os.Process
+	BigDisplayPlayerProcess 	*exec.Cmd
+	BigDisplayValuesProcess		*exec.Cmd
 }
 
 var CurrentDisplayState tCurrentDisplayState
 
+func prepareBigDisplay() error {
+	if media, ok := settings.Value("BigDispFileName", "").(string); ok && media != "" {
+		PlayerArgs := append(PlayerArgsCommon, media)
+		CurrentDisplayState.BigDisplayPlayerProcess = exec.Command(Player, PlayerArgs...)
+		CurrentDisplayState.BigDisplayPlayerProcess.Env = append(
+			CurrentDisplayState.BigDisplayPlayerProcess.Env,Big_Display)
+		err := CurrentDisplayState.BigDisplayPlayerProcess.Run()
+		if err != nil {
+			CurrentDisplayState.BigDisplayPlayerProcess = nil
+			return err
+		}
+		return nil
+	} else {
+		return errors.New("Big display player config error")
+	}
+}
+
 func StartDefault() {
 	ControlSmallDisplay(true)
-	ControlBigDisplay(ShowVideo_bigDisplay)
+	
+	prepareBigDisplay()
 } 
 
 func ControlSmallDisplay(enable bool) error {
@@ -71,58 +94,47 @@ func ControlSmallDisplay(enable bool) error {
 	return nil
 }
 
+func togglePlayBigDisplay() error {
+	if pipe, err := CurrentDisplayState.BigDisplayPlayerProcess.StdinPipe(); err == nil {
+		pipe.Write([]byte(PauseKey))
+		pipe.Write([]byte(ToggleFSkey))
+		return nil
+	} else {
+		return err
+	}
+}
+
 func ControlBigDisplay(ctrl int) error {
 	if ctrl != CurrentDisplayState.BigDisplayMode {
-		env := append(os.Environ(), Big_Display) // set DISPLAY env
 		switch(ctrl) {
 			case Diable_bigDisplay:
 				if CurrentDisplayState.BigDisplayPlayerProcess != nil {
-					CurrentDisplayState.BigDisplayPlayerProcess.Kill()
-					CurrentDisplayState.BigDisplayPlayerProcess = nil
-				}
-				if CurrentDisplayState.BigDisplayValuesProcess != nil {
-					CurrentDisplayState.BigDisplayValuesProcess.Kill()
-					CurrentDisplayState.BigDisplayValuesProcess = nil
-				}
-				log.Println("Big Display disabled")
-				
-			case ShowVideo_bigDisplay:
-				if CurrentDisplayState.BigDisplayValuesProcess != nil {
-					CurrentDisplayState.BigDisplayValuesProcess.Kill()
-					CurrentDisplayState.BigDisplayValuesProcess = nil
-				}
-				if CurrentDisplayState.BigDisplayPlayerProcess != nil {
-					CurrentDisplayState.BigDisplayMode = ShowVideo_bigDisplay
-					return errors.New("Allready playing")
-				}
-				
-				var PlayerArgs []string
-				if media, ok := settings.Value("BigDispFileName", "").(string); !ok || media == "" {
-					return errors.New("Playing media error")
-				} else {
-					PlayerArgs = append(PlayerArgsCommon, media)
+					if err := togglePlayBigDisplay(); err != nil {
+						return err
+					}
 				}
 
-				if proc, err :=	os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env}); err == nil {
-					CurrentDisplayState.BigDisplayPlayerProcess = proc
-				} else {
-					log.Println("Failed to start plaing on BIG display")
+			case ShowVideo_bigDisplay:
+				if CurrentDisplayState.BigDisplayPlayerProcess == nil {
+					if err := prepareBigDisplay(); err != nil { 
+						return err
+					}
+				}
+				
+				// TODO hide values form
+				
+				if err := togglePlayBigDisplay(); err != nil {
 					return err
 				}
 				
-				log.Println("Start playing on Big display")
-				
+			
 			case ShowQMLForm_bigDisplay:
 				if CurrentDisplayState.BigDisplayPlayerProcess != nil {
-					CurrentDisplayState.BigDisplayPlayerProcess.Kill()
-					CurrentDisplayState.BigDisplayPlayerProcess = nil
+					if err := togglePlayBigDisplay(); err != nil {
+						return err
+					}
 				}
-				if CurrentDisplayState.BigDisplayValuesProcess != nil {
-					CurrentDisplayState.BigDisplayMode = ShowQMLForm_bigDisplay
-					return errors.New("Allready Displaying")
-				}
-				
-				log.Println("Displaing values on big display")
+				// TODO bring values form to front
 				
 			default :
 				return errors.New("Incorrect ctrl request")
