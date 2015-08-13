@@ -56,7 +56,7 @@ func prepareBigDisplay() error {
 				return err
 			}
 		}
-		
+		CurrentDisplayState.BigDisplayMode = ShowVideo_bigDisplay
 		log.Println("Start player big display")
 		return nil
 	} else {
