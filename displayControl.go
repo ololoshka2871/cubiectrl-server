@@ -57,7 +57,7 @@ func prepareBigDisplay() error {
 			}
 		}
 		CurrentDisplayState.BigDisplayMode = ShowVideo_bigDisplay
-		log.Println("Start player big display")
+		log.Println("Start player for big display")
 		return nil
 	} else {
 		return errors.New("Big display player config error")
@@ -132,18 +132,17 @@ func ControlBigDisplay(ctrl int) error {
 
 			case ShowVideo_bigDisplay:
 				log.Println("Start player big display")
+				
+				// TODO hide values form
 				if CurrentDisplayState.BigDisplayPlayerProcess == nil {
 					if err := prepareBigDisplay(); err != nil { 
 						return err
 					}
+				} else {
+					if err := togglePlayBigDisplay(); err != nil {
+						return err;
+					}
 				}
-				
-				// TODO hide values form
-				
-				if err := togglePlayBigDisplay(); err != nil {
-					return err;
-				}
-				
 			case ShowQMLForm_bigDisplay:
 				log.Println("Show values big display")
 				if CurrentDisplayState.BigDisplayPlayerProcess != nil {
