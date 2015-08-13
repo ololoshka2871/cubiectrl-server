@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 	"os/exec"
+	"io"
 )
 
 const (
@@ -29,6 +30,8 @@ type tCurrentDisplayState struct {
 	
 	SmallDisplayPlayerProcess 	*os.Process
 	BigDisplayPlayerProcess 	*exec.Cmd
+	BigDisplayplayerStdinPipe	io.WriteCloser				
+	
 	BigDisplayValuesProcess		*exec.Cmd
 }
 
@@ -40,11 +43,18 @@ func prepareBigDisplay() error {
 		CurrentDisplayState.BigDisplayPlayerProcess = exec.Command(Player, PlayerArgs...)
 		CurrentDisplayState.BigDisplayPlayerProcess.Env = append(
 			CurrentDisplayState.BigDisplayPlayerProcess.Env,Big_Display)
-		err := CurrentDisplayState.BigDisplayPlayerProcess.Start()
-		if err != nil {
+		if pipe, err := CurrentDisplayState.BigDisplayPlayerProcess.StdinPipe(); err == nil {
+			CurrentDisplayState.BigDisplayplayerStdinPipe = pipe
+			err := CurrentDisplayState.BigDisplayPlayerProcess.Start()
+			if err != nil {
+				CurrentDisplayState.BigDisplayPlayerProcess = nil
+				return err
+			}
+		} else {
 			CurrentDisplayState.BigDisplayPlayerProcess = nil
 			return err
 		}
+		log.Println("Start player big display")
 		return nil
 	} else {
 		return errors.New("Big display player config error")
@@ -94,27 +104,22 @@ func ControlSmallDisplay(enable bool) error {
 	return nil
 }
 
-func togglePlayBigDisplay() error {
-	if pipe, err := CurrentDisplayState.BigDisplayPlayerProcess.StdinPipe(); err == nil {
-		pipe.Write([]byte(PauseKey))
-		pipe.Write([]byte(ToggleFSkey))
-		return nil
-	} else {
-		return err
-	}
+func togglePlayBigDisplay() {
+	CurrentDisplayState.BigDisplayplayerStdinPipe.Write([]byte(PauseKey))
+	CurrentDisplayState.BigDisplayplayerStdinPipe.Write([]byte(ToggleFSkey))
 }
 
 func ControlBigDisplay(ctrl int) error {
 	if ctrl != CurrentDisplayState.BigDisplayMode {
 		switch(ctrl) {
 			case Diable_bigDisplay:
+				log.Println("Stop player big display")
 				if CurrentDisplayState.BigDisplayPlayerProcess != nil {
-					if err := togglePlayBigDisplay(); err != nil {
-						return err
-					}
+					togglePlayBigDisplay()
 				}
 
 			case ShowVideo_bigDisplay:
+				log.Println("Start player big display")
 				if CurrentDisplayState.BigDisplayPlayerProcess == nil {
 					if err := prepareBigDisplay(); err != nil { 
 						return err
@@ -123,16 +128,12 @@ func ControlBigDisplay(ctrl int) error {
 				
 				// TODO hide values form
 				
-				if err := togglePlayBigDisplay(); err != nil {
-					return err
-				}
+				togglePlayBigDisplay()
 				
-			
 			case ShowQMLForm_bigDisplay:
+				log.Println("Show values big display")
 				if CurrentDisplayState.BigDisplayPlayerProcess != nil {
-					if err := togglePlayBigDisplay(); err != nil {
-						return err
-					}
+					togglePlayBigDisplay()
 				}
 				// TODO bring values form to front
 				
