@@ -5,7 +5,7 @@ import (
 	"errors"
 	"log"
 	"os/exec"
-	"io"
+	"syscall"
 )
 
 const (
@@ -18,20 +18,19 @@ const (
 	Big_Display = "DISPLAY=:0.0"
 	Small_Display = "DISPLAY=:0.1"
 	
-	PauseKey = "p"
-	ToggleFSkey = "f"
+	PauseCmd = "cycle pause\n"
+	ToggleFSCmd = "cycle fullscreen\n"
+	CmdPipeFile = "/tmp/mpvctrl.fifo"
 )
 
-var PlayerArgsCommon = []string{Player, "--fs", "--loop=inf"}
+var PlayerArgsCommon = []string{Player, "--fs", "--loop=inf", "--input-file=" + CmdPipeFile}
 
 type tCurrentDisplayState struct {
 	SmallDisplayMode bool
 	BigDisplayMode int
 	
 	SmallDisplayPlayerProcess 	*os.Process
-	BigDisplayPlayerProcess 	*exec.Cmd
-	BigDisplayplayerStdinPipe	io.WriteCloser				
-	
+	BigDisplayPlayerProcess 	*exec.Cmd	
 	BigDisplayValuesProcess		*exec.Cmd
 }
 
@@ -43,17 +42,21 @@ func prepareBigDisplay() error {
 		CurrentDisplayState.BigDisplayPlayerProcess = exec.Command(Player, PlayerArgs...)
 		CurrentDisplayState.BigDisplayPlayerProcess.Env = append(
 			CurrentDisplayState.BigDisplayPlayerProcess.Env,Big_Display)
-		if pipe, err := CurrentDisplayState.BigDisplayPlayerProcess.StdinPipe(); err == nil {
-			CurrentDisplayState.BigDisplayplayerStdinPipe = pipe
-			err := CurrentDisplayState.BigDisplayPlayerProcess.Start()
-			if err != nil {
+		
+		/* FIFO */
+		if _, err := os.Stat(CmdPipeFile); os.IsNotExist(err) {
+			if err := syscall.Mknod(CmdPipeFile, syscall.S_IFIFO|0666, 0); err == nil {
+				err := CurrentDisplayState.BigDisplayPlayerProcess.Start()
+				if err != nil {
+					CurrentDisplayState.BigDisplayPlayerProcess = nil
+					return err
+				}
+			} else {
 				CurrentDisplayState.BigDisplayPlayerProcess = nil
 				return err
 			}
-		} else {
-			CurrentDisplayState.BigDisplayPlayerProcess = nil
-			return err
 		}
+		
 		log.Println("Start player big display")
 		return nil
 	} else {
@@ -104,9 +107,16 @@ func ControlSmallDisplay(enable bool) error {
 	return nil
 }
 
-func togglePlayBigDisplay() {
-	CurrentDisplayState.BigDisplayplayerStdinPipe.Write([]byte(PauseKey))
-	CurrentDisplayState.BigDisplayplayerStdinPipe.Write([]byte(ToggleFSkey))
+func togglePlayBigDisplay() error {
+	
+	if f, err := os.OpenFile(CmdPipeFile, os.O_WRONLY, 0664); err == nil {
+		defer f.Close()
+		f.Write([]byte(PauseCmd))
+		f.Write([]byte(ToggleFSCmd))
+		return nil
+	} else {
+		return err
+	}
 }
 
 func ControlBigDisplay(ctrl int) error {
@@ -115,7 +125,9 @@ func ControlBigDisplay(ctrl int) error {
 			case Diable_bigDisplay:
 				log.Println("Stop player big display")
 				if CurrentDisplayState.BigDisplayPlayerProcess != nil {
-					togglePlayBigDisplay()
+					if err := togglePlayBigDisplay(); err != nil {
+						return err;
+					}
 				}
 
 			case ShowVideo_bigDisplay:
@@ -128,12 +140,16 @@ func ControlBigDisplay(ctrl int) error {
 				
 				// TODO hide values form
 				
-				togglePlayBigDisplay()
+				if err := togglePlayBigDisplay(); err != nil {
+					return err;
+				}
 				
 			case ShowQMLForm_bigDisplay:
 				log.Println("Show values big display")
 				if CurrentDisplayState.BigDisplayPlayerProcess != nil {
-					togglePlayBigDisplay()
+					if err := togglePlayBigDisplay(); err != nil {
+						return err;
+					}
 				}
 				// TODO bring values form to front
 				
