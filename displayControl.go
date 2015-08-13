@@ -40,7 +40,7 @@ func prepareBigDisplay() error {
 		CurrentDisplayState.BigDisplayPlayerProcess = exec.Command(Player, PlayerArgs...)
 		CurrentDisplayState.BigDisplayPlayerProcess.Env = append(
 			CurrentDisplayState.BigDisplayPlayerProcess.Env,Big_Display)
-		err := CurrentDisplayState.BigDisplayPlayerProcess.Run()
+		err := CurrentDisplayState.BigDisplayPlayerProcess.Start()
 		if err != nil {
 			CurrentDisplayState.BigDisplayPlayerProcess = nil
 			return err
