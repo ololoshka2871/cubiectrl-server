@@ -21,7 +21,7 @@ const (
 var settingsmap = map[string]interface{} { "SmallDispFileName" : "",
 			"BigDispFileName" : "",
 			"Port" : "/dev/ttyS0",
-			"BoudRate" : 57600,
+			"BoudRate" : 57600.0,
 			"RtsPin" : "gpio3_pg8",
 			"UpdateDelay" : 100,
 			};

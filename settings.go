@@ -37,7 +37,7 @@ func createPath(path string) {
 		// такого пути нету, повторить с уровнем ниже
 		createPath(filepath.Dir(path))
 		
-		// теперь создаем каталон
+		// теперь создаем каталог
 		err = os.Mkdir(path, 0775)
 		if err != nil {
 			panic(fmt.Sprintf("Failed to create %s : %s", path, err.Error()))
