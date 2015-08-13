@@ -23,7 +23,7 @@ var settingsmap = map[string]interface{} { "SmallDispFileName" : "",
 			"Port" : "/dev/ttyS0",
 			"BoudRate" : 57600.0,
 			"RtsPin" : "gpio3_pg8",
-			"UpdateDelay" : 100,
+			"UpdateDelay" : 100.0,
 			};
 
 type SettingsHolder interface{
