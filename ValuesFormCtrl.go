@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	ValuesExecutable = "/home/cubie/src/test2/test2" //TODO
+	ValuesExecutable = "true" //TODO
 	SocketName = "/tmp/ValuesCtrlSock.unix"
 )
 
@@ -23,6 +23,11 @@ func SendValuesCmd(cmd string) {
 }
 
 func ValuesFormCtrlInit(d <-chan CellData) error {
+	// remove socket file if allready exists
+	if _, err := os.Stat(SocketName); !os.IsNotExist(err) {
+		os.Remove(SocketName)
+	}
+	
 	if l, err := net.Listen("unix", SocketName); err != nil {
         return err
     } else {
