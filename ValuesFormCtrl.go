@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	ValuesExecutable = "/home/shiloxyz/src/qml/test2/test2/test2" //TODO
+	ValuesExecutable = "/home/cubie/src/test2/test2" //TODO
 	SocketName = "/tmp/ValuesCtrlSock.unix"
 )
 
