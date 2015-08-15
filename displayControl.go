@@ -46,7 +46,10 @@ func prepareBigDisplay() error {
 		go func(){
 			var d []byte
 			for {
-				_, err := tp.Read(d)
+				n, err := tp.Read(d)
+				if n == 0 {
+					continue
+				}
 				if err != nil {
 					log.Print(err.Error())
 				}
