@@ -43,6 +43,7 @@ func prepareBigDisplay() error {
 		CurrentDisplayState.BigDisplayPlayerProcess.Env = append(
 			CurrentDisplayState.BigDisplayPlayerProcess.Env,Big_Display)
 		
+		log.Println("Starting ctrl pipe")
 		tp, _ := CurrentDisplayState.BigDisplayPlayerProcess.StdoutPipe()
 		go func(){
 			var d []byte
