@@ -6,7 +6,7 @@ import (
 	"log"
 	"os/exec"
 	"syscall"
-	"time"
+	//"time"
 )
 
 const (
@@ -41,8 +41,8 @@ func prepareBigDisplay() error {
 		PlayerArgs := append(PlayerArgsCommon, media)
 		CurrentDisplayState.BigDisplayPlayerProcess = exec.Command(Player, PlayerArgs...)
 		CurrentDisplayState.BigDisplayPlayerProcess.Env = append(
-			CurrentDisplayState.BigDisplayPlayerProcess.Env,Big_Display)
-		
+			CurrentDisplayState.BigDisplayPlayerProcess.Env, Big_Display)
+	/*	
 		log.Println("Starting ctrl pipe")
 		tp, _ := CurrentDisplayState.BigDisplayPlayerProcess.StdoutPipe()
 		go func(){
@@ -59,7 +59,7 @@ func prepareBigDisplay() error {
 				log.Print(d)
 			}
 		}()
-		
+	*/	
 		/* FIFO */
 		if _, err := os.Stat(CmdPipeFile); os.IsNotExist(err) {
 			if err := syscall.Mknod(CmdPipeFile, syscall.S_IFIFO|0666, 0); err == nil {
@@ -82,7 +82,7 @@ func prepareBigDisplay() error {
 }
 
 func StartDefault() {
-	ControlSmallDisplay(true)
+	//ControlSmallDisplay(true)
 	SendValuesCmd("hide")
 	if err := prepareBigDisplay(); err != nil {
 		panic(err)
