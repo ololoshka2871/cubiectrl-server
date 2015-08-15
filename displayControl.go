@@ -6,6 +6,7 @@ import (
 	"log"
 	"os/exec"
 	"syscall"
+	"time"
 )
 
 const (
@@ -48,6 +49,7 @@ func prepareBigDisplay() error {
 			for {
 				n, err := tp.Read(d)
 				if n == 0 {
+					time.Sleep(time.Millisecond)
 					continue
 				}
 				if err != nil {
