@@ -23,7 +23,7 @@ const (
 	CmdPipeFile = "/tmp/mpvctrl.fifo"
 )
 
-var PlayerArgsCommon = []string{Player, "--fs", "--loop=inf", "--input-file=" + CmdPipeFile}
+var PlayerArgsCommon = []string{Player, "--fs", "--loop=inf", "--no-audio", "--input-file=" + CmdPipeFile}
 
 type tCurrentDisplayState struct {
 	SmallDisplayMode bool
@@ -31,7 +31,6 @@ type tCurrentDisplayState struct {
 	
 	SmallDisplayPlayerProcess 	*os.Process
 	BigDisplayPlayerProcess 	*exec.Cmd	
-	BigDisplayValuesProcess		*exec.Cmd
 }
 
 var CurrentDisplayState tCurrentDisplayState
@@ -42,6 +41,18 @@ func prepareBigDisplay() error {
 		CurrentDisplayState.BigDisplayPlayerProcess = exec.Command(Player, PlayerArgs...)
 		CurrentDisplayState.BigDisplayPlayerProcess.Env = append(
 			CurrentDisplayState.BigDisplayPlayerProcess.Env,Big_Display)
+		
+		tp, _ := CurrentDisplayState.BigDisplayPlayerProcess.StdoutPipe()
+		go func(){
+			var d []byte
+			for {
+				_, err := tp.Read(d)
+				if err != nil {
+					log.Print(err.Error())
+				}
+				log.Print(d)
+			}
+		}()
 		
 		/* FIFO */
 		if _, err := os.Stat(CmdPipeFile); os.IsNotExist(err) {
