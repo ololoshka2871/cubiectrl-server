@@ -134,6 +134,8 @@ func ControlBigDisplay(ctrl int) error {
 				log.Println("Start player big display")
 				
 				// TODO hide values form
+				SendValuesCmd("hide")
+				
 				if CurrentDisplayState.BigDisplayPlayerProcess == nil {
 					if err := prepareBigDisplay(); err != nil { 
 						return err
@@ -151,6 +153,7 @@ func ControlBigDisplay(ctrl int) error {
 					}
 				}
 				// TODO bring values form to front
+				SendValuesCmd("show")
 				
 			default :
 				return errors.New("Incorrect ctrl request")

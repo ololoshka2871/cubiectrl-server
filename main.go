@@ -28,6 +28,11 @@ func main() {
 	rtsPin, ok3 := settings.Value("RtsPin", "gpio3_pg8").(string)
 	if ok1 && ok2 && ok3 {
 		dataToServerChan = make(chan CellData)
+		dataToDisplayChan := make(chan CellData)
+		
+		if err := ValuesFormCtrlInit(dataToDisplayChan); err != nil {
+			panic("Failed to start display form ctrl: " + err.Error())
+		}
 		
 		resChan, err := StartModbusClient(port, int(baudRate), rtsPin, settings)
 		if err != nil {
@@ -43,6 +48,7 @@ func main() {
 						data4server.Value = val
 					}
 					dataToServerChan <- data4server
+					dataToDisplayChan <- data4server
 				}
 			}(resChan)
 		} 
