@@ -66,8 +66,10 @@ func prepareBigDisplay() error {
 
 func StartDefault() {
 	ControlSmallDisplay(true)
-	
-	prepareBigDisplay()
+	SendValuesCmd("hide")
+	if err := prepareBigDisplay(); err != nil {
+		panic(err)
+	}
 } 
 
 func ControlSmallDisplay(enable bool) error {
@@ -80,7 +82,7 @@ func ControlSmallDisplay(enable bool) error {
 			} else {
 				PlayerArgs = append(PlayerArgsCommon, media)
 			}
-			if proc, err :=	os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env, Files: []*os.File{nil, os.Stdout, os.Stderr}}); err == nil {
+			if proc, err :=	os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env/* Files: []*os.File{nil, os.Stdout, os.Stderr}*/}); err == nil {
 				CurrentDisplayState.SmallDisplayPlayerProcess = proc
 			} else {
 				log.Println("Failed to start plaing on SMALL display")
@@ -133,7 +135,7 @@ func ControlBigDisplay(ctrl int) error {
 			case ShowVideo_bigDisplay:
 				log.Println("Start player big display")
 				
-				// TODO hide values form
+				// hide values form
 				SendValuesCmd("hide")
 				
 				if CurrentDisplayState.BigDisplayPlayerProcess == nil {
@@ -152,7 +154,7 @@ func ControlBigDisplay(ctrl int) error {
 						return err;
 					}
 				}
-				// TODO bring values form to front
+				// bring values form to front
 				SendValuesCmd("show")
 				
 			default :
