@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	ValuesExecutable = "true" //TODO
+	ValuesExecutable = "/bin/sh" //TODO
 	SocketName = "/tmp/ValuesCtrlSock.unix"
 )
 
