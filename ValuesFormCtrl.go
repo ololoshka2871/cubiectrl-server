@@ -45,6 +45,7 @@ func ValuesFormCtrlInit(d <-chan CellData) error {
 		        go func() {
 		        	for msg := range cmdChan {
 		        		fd.Write([]byte(msg))
+		        		fd.Write([]byte{'\n'})
 		        	}
 		        }()
 	    	}
