@@ -125,6 +125,7 @@ func togglePlayBigDisplay() error {
 		f.Write([]byte(ToggleFSCmd))
 		return nil
 	} else {
+		log.Printf("Toggle failed: " + err.Error())
 		return err
 	}
 }
