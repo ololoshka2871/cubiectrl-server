@@ -15,7 +15,7 @@ const (
 	ShowQMLForm_bigDisplay = 2
 	
 	Player = "/usr/bin/mpv"
-	//QmlProgramm = "" /*TODO*/
+
 	Big_Display = "DISPLAY=:0.0"
 	Small_Display = "DISPLAY=:0.1"
 	
@@ -82,7 +82,7 @@ func prepareBigDisplay() error {
 }
 
 func StartDefault() {
-	//ControlSmallDisplay(true)
+	ControlSmallDisplay(true)
 	SendValuesCmd("hide")
 	if err := prepareBigDisplay(); err != nil {
 		panic(err)
