@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	ValuesExecutable = "/home/cubie/src/displayForm/displayForm"
+	ValuesExecutable = "/home/cubie/src/cubiectrl-values-display/cubiectrl-values-display"
 	SocketName = "/tmp/ValuesCtrlSock.unix"
 )
 
