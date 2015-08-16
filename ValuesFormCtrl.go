@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	ValuesExecutable = "/bin/sh" //TODO
+	ValuesExecutable = "/home/cubie/src/displayForm/displayForm"
 	SocketName = "/tmp/ValuesCtrlSock.unix"
 )
 
