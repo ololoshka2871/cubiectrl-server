@@ -18,7 +18,8 @@ var commandChans []chan string
 
 func SendValuesCmd(cmd string) {
 	log.Printf("Sending command to valuesDisplay: %s", cmd)
-	for _, c:= range commandChans {
+	for n, c:= range commandChans {
+		log.Printf("Sended to listener %d", n)
 		c <- cmd
 	}
 }
@@ -40,7 +41,7 @@ func ValuesFormCtrlInit(d <-chan CellData) error {
 		        if err != nil {
 		            log.Fatal("accept error:", err)
 		        }
-		        cmdChan := make(chan string, 5)
+		        cmdChan := make(chan string)
 		        commandChans = append(commandChans, cmdChan)
 		
 		        go func() {
