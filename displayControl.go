@@ -22,9 +22,10 @@ const (
 	PauseCmd = "cycle pause\n"
 	ToggleFSCmd = "cycle fullscreen\n"
 	CmdPipeFile = "/tmp/mpvctrl.fifo"
+	RemoteCtrl = "--input-file=" + CmdPipeFile
 )
 
-var PlayerArgsCommon = []string{Player, "--fs", "--loop=inf", "--no-audio", "--input-file=" + CmdPipeFile}
+var PlayerArgsCommon = []string{Player, "--fs", "--loop=inf", "--no-audio"}
 
 type tCurrentDisplayState struct {
 	SmallDisplayMode bool
@@ -38,28 +39,12 @@ var CurrentDisplayState tCurrentDisplayState
 
 func prepareBigDisplay() error {
 	if media, ok := settings.Value("BigDispFileName", "").(string); ok && media != "" {
-		PlayerArgs := append(PlayerArgsCommon, media)
+		PlayerArgs := append(PlayerArgsCommon, RemoteCtrl)
+		PlayerArgs = append(PlayerArgsCommon, media)
 		CurrentDisplayState.BigDisplayPlayerProcess = exec.Command(Player, PlayerArgs...)
 		CurrentDisplayState.BigDisplayPlayerProcess.Env = append(
 			CurrentDisplayState.BigDisplayPlayerProcess.Env, Big_Display)
-	/*	
-		log.Println("Starting ctrl pipe")
-		tp, _ := CurrentDisplayState.BigDisplayPlayerProcess.StdoutPipe()
-		go func(){
-			var d []byte
-			for {
-				n, err := tp.Read(d)
-				if n == 0 {
-					time.Sleep(time.Millisecond)
-					continue
-				}
-				if err != nil {
-					log.Print(err.Error())
-				}
-				log.Print(d)
-			}
-		}()
-	*/	
+
 		/* FIFO */
 		if _, err := os.Stat(CmdPipeFile); os.IsNotExist(err) {
 			if err := syscall.Mknod(CmdPipeFile, syscall.S_IFIFO|0666, 0); err == nil {
