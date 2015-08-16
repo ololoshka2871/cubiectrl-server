@@ -118,6 +118,7 @@ func togglePlayBigDisplay() error {
 	
 	if f, err := os.OpenFile(CmdPipeFile, os.O_WRONLY, 0664); err == nil {
 		defer f.Close()
+		log.Print("Toggling player in big display")
 		f.Write([]byte(PauseCmd))
 		f.Write([]byte(ToggleFSCmd))
 		return nil
