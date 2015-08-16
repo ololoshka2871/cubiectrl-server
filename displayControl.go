@@ -22,10 +22,10 @@ const (
 	PauseCmd = "cycle pause\n"
 	ToggleFSCmd = "cycle fullscreen\n"
 	CmdPipeFile = "/tmp/mpvctrl.fifo"
-	RemoteCtrl = "--input-file=" + CmdPipeFile
+	PipeCtrl = "--input-file=" + CmdPipeFile
 )
 
-var PlayerArgsCommon = []string{Player, "--fs", "--loop=inf", "--no-audio"}
+var PlayerArgsCommon = []string{" ", "--fs", "--loop=inf", "--no-audio"}
 
 type tCurrentDisplayState struct {
 	SmallDisplayMode bool
@@ -39,8 +39,8 @@ var CurrentDisplayState tCurrentDisplayState
 
 func prepareBigDisplay() error {
 	if media, ok := settings.Value("BigDispFileName", "").(string); ok && media != "" {
-		PlayerArgs := append(PlayerArgsCommon, RemoteCtrl)
-		PlayerArgs = append(PlayerArgsCommon, media)
+		PlayerArgs := append(PlayerArgsCommon, PipeCtrl)
+		PlayerArgs = append(PlayerArgs, media)
 		CurrentDisplayState.BigDisplayPlayerProcess = exec.Command(Player, PlayerArgs...)
 		CurrentDisplayState.BigDisplayPlayerProcess.Env = append(
 			CurrentDisplayState.BigDisplayPlayerProcess.Env, Big_Display)
@@ -120,13 +120,13 @@ func ControlSmallDisplay(enable bool) error {
 func togglePlayBigDisplay() error {
 	
 	if f, err := os.OpenFile(CmdPipeFile, os.O_WRONLY, 0664); err == nil {
-		log.Print("Toggling player in big display")
+		log.Println("Toggling player in big display")
 		defer f.Close()
 		f.Write([]byte(PauseCmd))
 		f.Write([]byte(ToggleFSCmd))
 		return nil
 	} else {
-		log.Printf("Toggle failed: " + err.Error())
+		log.Println("Toggle failed: " + err.Error())
 		return err
 	}
 }
