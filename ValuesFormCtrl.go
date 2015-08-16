@@ -40,7 +40,7 @@ func ValuesFormCtrlInit(d <-chan CellData) error {
 		        if err != nil {
 		            log.Fatal("accept error:", err)
 		        }
-		        cmdChan := make(chan string)
+		        cmdChan := make(chan string, 5)
 		        commandChans = append(commandChans, cmdChan)
 		
 		        go func() {
