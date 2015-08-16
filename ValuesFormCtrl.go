@@ -61,10 +61,12 @@ func ValuesFormCtrlInit(d <-chan CellData) error {
 			}
 		}()
 		
-		env := append(os.Environ(), Big_Display) // set DISPLAY env
+		//env := append(os.Environ(), Big_Display) // set DISPLAY env
+		log.Println("Starting values form")
+		/*
 		if _, err := os.StartProcess(ValuesExecutable, ValuesProcArgs, &os.ProcAttr{Env : env}); err != nil {
 			return err
-		}
+		}*/
 	}
 	
 	return nil
