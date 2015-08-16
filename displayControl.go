@@ -47,7 +47,10 @@ func prepareBigDisplay() error {
 
 		/* FIFO */
 		if _, err := os.Stat(CmdPipeFile); !os.IsNotExist(err) {
-			os.Remove(CmdPipeFile)
+			log.Println("Removeng old pipefile")
+			if err := os.Remove(CmdPipeFile); err != nil {
+				panic(err.Error())
+			}
 		}
 		
 		if err := syscall.Mknod(CmdPipeFile, syscall.S_IFIFO|0666, 0); err == nil {
