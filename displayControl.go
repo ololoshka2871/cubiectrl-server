@@ -46,18 +46,21 @@ func prepareBigDisplay() error {
 			CurrentDisplayState.BigDisplayPlayerProcess.Env, Big_Display)
 
 		/* FIFO */
-		if _, err := os.Stat(CmdPipeFile); os.IsNotExist(err) {
-			if err := syscall.Mknod(CmdPipeFile, syscall.S_IFIFO|0666, 0); err == nil {
-				err := CurrentDisplayState.BigDisplayPlayerProcess.Start()
-				if err != nil {
-					CurrentDisplayState.BigDisplayPlayerProcess = nil
-					return err
-				}
-			} else {
+		if _, err := os.Stat(CmdPipeFile); !os.IsNotExist(err) {
+			os.Remove(CmdPipeFile)
+		}
+		
+		if err := syscall.Mknod(CmdPipeFile, syscall.S_IFIFO|0666, 0); err == nil {
+			err := CurrentDisplayState.BigDisplayPlayerProcess.Start()
+			if err != nil {
 				CurrentDisplayState.BigDisplayPlayerProcess = nil
 				return err
 			}
+		} else {
+			CurrentDisplayState.BigDisplayPlayerProcess = nil
+			return err
 		}
+			
 		CurrentDisplayState.BigDisplayMode = ShowVideo_bigDisplay
 		log.Println("Start player for big display")
 		return nil
@@ -84,7 +87,7 @@ func ControlSmallDisplay(enable bool) error {
 			} else {
 				PlayerArgs = append(PlayerArgsCommon, media)
 			}
-			if proc, err :=	os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env/* Files: []*os.File{nil, os.Stdout, os.Stderr}*/}); err == nil {
+			if proc, err :=	os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env}); err == nil {
 				CurrentDisplayState.SmallDisplayPlayerProcess = proc
 			} else {
 				log.Println("Failed to start plaing on SMALL display")
