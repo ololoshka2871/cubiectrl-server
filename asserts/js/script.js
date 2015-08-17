@@ -62,6 +62,26 @@ function update_mesureValues() {
 			plotData(data_spin, v_data, plot_spin, options);
 		}
 	});
+	
+	$.ajax({
+		url: "/data.api",
+		dataType: "json",
+		method : "POST",
+		cache: false,
+		data : { "req" : "mesurment", "type" : "flow" },
+		success : function(v_data) {
+
+			// create data set
+			if 	(typeof data_spin === 'undefined') {	 
+				data_spin = new Array();
+				for (var serie in v_data) {
+					data_spin.push({ label : serie, data : [] })
+				}
+			} 
+			
+			plotData(data_spin, v_data, plot_spin, options);
+		}
+	});
 }
 
 function rereadSettings() {
@@ -223,6 +243,7 @@ jQuery(document).ready(function($){
 	// create plots
 	plot_temp = $.plot("#plot_temp", [[[]]], options);
 	plot_spin = $.plot("#plot_spin", [[[]]], options);
+	plot_floaw = $.plot("#plot_flow", [[[]]], options);
 	
 	$("#submitBtn").click(sendSettings);
 	$("#resetBtn").click(resetSettings);
