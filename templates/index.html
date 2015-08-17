@@ -37,12 +37,28 @@
 							<input class="lineedit" type="text" size="10" name="BoudRate" value="{{.BoudRate}}">
 						</p>
 						<p>
-							<b>Порт управления R/W RS485:</b><br>
+							<b>Порт управления R/W RS485</b><br>
 							<input class="lineedit" type="text" size="20" name="RtsPin" value="{{.RtsPin}}">
 						</p>
 						<p>
 							<b>Интервал попроса датчиков</b><br>
 							<input class="lineedit" type="text" size="10" name="UpdateDelay" value="{{.UpdateDelay}}">
+						</p>
+						<p>
+							<b>Порт сигнала включения [Вход]</b><br>
+							<input class="lineedit" type="text" size="20" name="EnableInput" value="{{.EnableInput}}">
+						</p>
+						<p>
+							<b>Порт сигнала смены режим [Вход]</b><br>
+							<input class="lineedit" type="text" size="20" name="SwitchModeInput" value="{{.SwitchModeInput}}">
+						</p>
+						<p>
+							<b>Порт генератора управления индикатором на предней панели [Выход]</b><br>
+							<input class="lineedit" type="text" size="20" name="FacePlaneCtrlOutput" value="{{.FacePlaneCtrlOutput}}">
+						</p>
+						<p>
+							<b>Период генерации импульсов для управления передней панелью [c]</b><br>
+							<input class="lineedit" type="text" size="10" name="FacePlaneCtrlPeriod" value="{{.FacePlaneCtrlPeriod}}">
 						</p>
 						<div class="buttonplace">
 							<input class="button" type="button" size="20" id="submitBtn" value="Применить">

@@ -24,6 +24,10 @@ var settingsmap = map[string]interface{} { "SmallDispFileName" : "",
 			"BoudRate" : 57600.0,
 			"RtsPin" : "gpio3_pg8",
 			"UpdateDelay" : 100.0,
+			"EnableInput" : "gpio3_pg10",
+			"SwitchModeInput" : "gpio3_pg11",
+			"FacePlaneCtrlOutput" : "gpio3_pg89",
+			"FacePlaneCtrlPeriod" : 1.0,
 			};
 
 type SettingsHolder interface{
@@ -40,6 +44,10 @@ type IndexPageParams struct {
 	BoudRate int
 	RtsPin string
 	UpdateDelay int
+	EnableInput string
+	SwitchModeInput string
+	FacePlaneCtrlOutput string
+	FacePlaneCtrlPeriod float64
 	State		string
 }
 
@@ -196,6 +204,10 @@ func getParamsMap() *IndexPageParams {
 		BoudRate : int(settingsValues.Value("BoudRate", settingsmap["BoudRate"]).(float64)),
 		RtsPin : settingsValues.Value("RtsPin", settingsmap["RtsPin"]).(string),
 		UpdateDelay : int(settingsValues.Value("UpdateDelay", settingsmap["UpdateDelay"]).(float64)),
+		EnableInput : settingsValues.Value("EnableInput", settingsmap["EnableInput"]).(string),
+		SwitchModeInput : settingsValues.Value("SwitchModeInput", settingsmap["SwitchModeInput"]).(string),
+		FacePlaneCtrlOutput : settingsValues.Value("FacePlaneCtrlOutput", settingsmap["FacePlaneCtrlOutput"]).(string),
+		FacePlaneCtrlPeriod : settingsValues.Value("FacePlaneCtrlPeriod", settingsmap["FacePlaneCtrlPeriod"]).(float64),
 		State : start2name[CurrentDisplayState.BigDisplayMode],
     	}
 }
