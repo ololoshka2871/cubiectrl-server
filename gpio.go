@@ -31,13 +31,11 @@ func NewGpioPin(pin string) (*GpioPin, error) {
 	if err != nil {
 		return nil, err 
 	}
-	defer valueFile.Close()
 
 	directionFile, err := os.OpenFile(direction, os.O_RDWR, 0664)
 	if err != nil {
 		return nil, err
 	}
-	defer directionFile.Close()
  	
 	result := &GpioPin{valueFile, directionFile, false}
 	if dir, err := result.Direction(); err != nil {
@@ -98,8 +96,8 @@ func (this *GpioPin) Value() (bool, error) {
 		return false, nil
 	} else {
 		switch string(valStr) {
-			case "0\n" : return false, nil;
-			case "1\n" : return true, nil;
+			case "0" : return false, nil;
+			case "1" : return true, nil;
 			default: panic("Unknow value: " + string(valStr))
 		}
 	}
