@@ -10,6 +10,10 @@ import (
     "time"
 )
 
+const (
+	Log_requests = false
+)
+
 type CubieCtrlHttpServer struct {
 	http.Server
 	mux map[string]func(http.ResponseWriter, *http.Request) // карта страница - обработчик
@@ -64,7 +68,9 @@ func (this *myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h := this.findBestMatchHandler(url)
 
 	if h != nil {
-		log.Printf("Processing url: %s -> %#x", url, h)
+		if Log_requests {
+			log.Printf("Processing url: %s -> %#x", url, h)
+		}
 		h(w, r)
 		return
 	}
