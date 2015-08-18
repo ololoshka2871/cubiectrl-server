@@ -31,6 +31,9 @@ function update_mesureValues() {
 		data : { "req" : "mesurment", "type" : "temp" },
 		success : function(v_data) {
 
+			if (v_data == null)
+				return
+				
 			// create data set
 			if 	(typeof data_temp === 'undefined') {	 
 				data_temp = new Array();
@@ -50,6 +53,9 @@ function update_mesureValues() {
 		cache: false,
 		data : { "req" : "mesurment", "type" : "spin" },
 		success : function(v_data) {
+			
+			if (v_data == null)
+				return
 
 			// create data set
 			if 	(typeof data_spin === 'undefined') {	 
@@ -70,6 +76,9 @@ function update_mesureValues() {
 		cache: false,
 		data : { "req" : "mesurment", "type" : "flow" },
 		success : function(v_data) {
+		
+			if (v_data == null)
+				return
 
 			// create data set
 			if 	(typeof data_spin === 'undefined') {	 
