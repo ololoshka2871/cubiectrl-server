@@ -35,7 +35,7 @@ func PrepareModeSwitcher(pin string) error {
 							log.Println("Switch mode button")
 							switch CurrentDisplayState.BigDisplayMode {
 								case Diable_bigDisplay:
-									ControlBigDisplay(ShowVideo_bigDisplay)
+									return
 								case ShowVideo_bigDisplay:
 									ControlBigDisplay(ShowQMLForm_bigDisplay)
 								case ShowQMLForm_bigDisplay:
