@@ -18,7 +18,7 @@ const (
 	DiscreteInput = 3
 	
 	MBTimeout = 100
-	MBDebug = true
+	MBDebug = false
 )
 
 type Cell struct {

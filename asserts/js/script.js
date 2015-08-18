@@ -81,8 +81,8 @@ function update_mesureValues() {
 				return
 
 			// create data set
-			if 	(typeof data_spin === 'undefined') {	 
-				data_spin = new Array();
+			if 	(typeof data_flow === 'undefined') {	 
+				data_flow = new Array();
 				for (var serie in v_data) {
 					data_flow.push({ label : serie, data : [] })
 				}
