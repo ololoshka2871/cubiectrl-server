@@ -8,6 +8,10 @@ import (
 
 var settings *Settings
 
+const (
+	SkipOnError = true
+) 
+
 func main() {
 	var (
 		dataToServerChan chan CellData
@@ -43,6 +47,9 @@ func main() {
 					val, err := v.valueAsFloat()
 					data4server := CellData{ Name : v.Name, Timestamp : time.Now() }
 					if err != nil {
+						if SkipOnError {
+							continue
+						}
 						data4server.Error = true
 					} else {
 						data4server.Value = val
