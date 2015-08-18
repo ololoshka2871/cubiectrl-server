@@ -95,7 +95,7 @@ func StartModbusClient(serialPort string, baudRate int, RTS_Pin string, settings
 }
 
 func BuildCellsTable() []Cell {
-	result := make([]Cell, 10)
+	result := make([]Cell, 16)
 	/*
 	result[0] = Cell{Name : "Cpu_temp", DevAddr : 4, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0}
 	result[1] = Cell{Name : "Cpu_spin", DevAddr : 4, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 2}
@@ -108,20 +108,20 @@ func BuildCellsTable() []Cell {
 	result[2] = Cell{Name : "Video_temp1", DevAddr : 31, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0x10}
 	result[3] = Cell{Name : "Video_spin1", DevAddr : 31, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0x12}
 	
-	result[0] = Cell{Name : "Cpu_temp2", DevAddr : 32, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0}
-	result[1] = Cell{Name : "flow3", DevAddr : 32, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 2}
-	result[2] = Cell{Name : "Video_temp2", DevAddr : 32, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0x10}
-	result[3] = Cell{Name : "Video_spin2", DevAddr : 32, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0x12}
+	result[4] = Cell{Name : "Cpu_temp2", DevAddr : 32, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0}
+	result[5] = Cell{Name : "flow3", DevAddr : 32, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 2}
+	result[6] = Cell{Name : "Video_temp2", DevAddr : 32, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0x10}
+	result[7] = Cell{Name : "Video_spin2", DevAddr : 32, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0x12}
 	
-	result[0] = Cell{Name : "Cpu_temp3", DevAddr : 33, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0}
-	result[1] = Cell{Name : "Cpu_spin3", DevAddr : 33, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 2}
-	result[2] = Cell{Name : "Video_temp3", DevAddr : 33, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0x10}
-	result[3] = Cell{Name : "Video_spin3", DevAddr : 33, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0x12}
+	result[8] = Cell{Name : "Cpu_temp3", DevAddr : 33, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0}
+	result[9] = Cell{Name : "Cpu_spin3", DevAddr : 33, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 2}
+	result[10] = Cell{Name : "Video_temp3", DevAddr : 33, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0x10}
+	result[11] = Cell{Name : "Video_spin3", DevAddr : 33, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0x12}
 	
-	result[0] = Cell{Name : "flow1", DevAddr : 34, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0}
-	result[1] = Cell{Name : "flow2", DevAddr : 34, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 2}
-	result[2] = Cell{Name : "Video_temp4", DevAddr : 34, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0x10}
-	result[3] = Cell{Name : "Video_spin4", DevAddr : 34, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0x12}
+	result[12] = Cell{Name : "flow1", DevAddr : 34, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0}
+	result[13] = Cell{Name : "flow2", DevAddr : 34, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 2}
+	result[14] = Cell{Name : "Video_temp4", DevAddr : 34, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0x10}
+	result[15] = Cell{Name : "Video_spin4", DevAddr : 34, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0x12}
 	
 	
 	
