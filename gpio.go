@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"strings"
 )
 
 type GpioPin struct {
@@ -95,10 +96,13 @@ func (this *GpioPin) Value() (bool, error) {
 	if valStr, err := ioutil.ReadAll(this.valueFile); err != nil {
 		return false, nil
 	} else {
-		switch string(valStr) {
-			case "0" : return false, nil;
-			case "1" : return true, nil;
-			default: panic("Unknow value: " + string(valStr))
+		s := string(valStr)
+		if strings.Contains(s, "0") {
+			return false, nil;
+		} else if strings.Contains(s, "1") {
+			return true, nil;
+		} else {
+			panic("Unknow value: " + s)
 		}
 	}
 }
