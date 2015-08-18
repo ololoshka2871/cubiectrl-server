@@ -1,5 +1,6 @@
 var data_temp, data_spin
 var plot_temp, plot_spin
+var plot_flow, plot_flow
 
 var options = {
 		lines: {
@@ -75,11 +76,11 @@ function update_mesureValues() {
 			if 	(typeof data_spin === 'undefined') {	 
 				data_spin = new Array();
 				for (var serie in v_data) {
-					data_spin.push({ label : serie, data : [] })
+					data_flow.push({ label : serie, data : [] })
 				}
 			} 
 			
-			plotData(data_spin, v_data, plot_spin, options);
+			plotData(data_flow, v_data, plot_flow, options);
 		}
 	});
 }
@@ -243,7 +244,7 @@ jQuery(document).ready(function($){
 	// create plots
 	plot_temp = $.plot("#plot_temp", [[[]]], options);
 	plot_spin = $.plot("#plot_spin", [[[]]], options);
-	plot_floaw = $.plot("#plot_flow", [[[]]], options);
+	plot_flow = $.plot("#plot_flow", [[[]]], options);
 	
 	$("#submitBtn").click(sendSettings);
 	$("#resetBtn").click(resetSettings);
