@@ -54,8 +54,8 @@ func (this *GpioPin) Direction() (bool, error) {
 		return false, nil
 	} else {
 		switch string(dirStr) {
-			case "in" : return false, nil;
-			case "out" : return true, nil;
+			case "in\n" : return false, nil;
+			case "out\n" : return true, nil;
 			default: panic("Unknow direction: " + string(dirStr))
 		}
 	}
@@ -96,8 +96,8 @@ func (this *GpioPin) Value() (bool, error) {
 		return false, nil
 	} else {
 		switch string(valStr) {
-			case "0" : return false, nil;
-			case "1" : return true, nil;
+			case "0\n" : return false, nil;
+			case "1\n" : return true, nil;
 			default: panic("Unknow value: " + string(valStr))
 		}
 	}
