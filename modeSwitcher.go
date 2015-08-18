@@ -32,6 +32,7 @@ func PrepareModeSwitcher(pin string) error {
 				} else {
 					if v != prevState {
 						if !v {
+							log.Println("Switch mode button")
 							switch CurrentDisplayState.BigDisplayMode {
 								case Diable_bigDisplay:
 									ControlBigDisplay(ShowVideo_bigDisplay)

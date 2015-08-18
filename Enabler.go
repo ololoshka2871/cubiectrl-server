@@ -11,6 +11,7 @@ const (
 )
 
 func Started() {
+	log.Println("Start event detected!")
 	StartDefault()
 	
 	PulseGenerate(2 * 8)
@@ -20,6 +21,7 @@ func Stopped() {
 	ControlSmallDisplay(false)
 	
 	ControlBigDisplay(Diable_bigDisplay)
+	log.Println("Shutdown event detected!")
 }
 
 func SetupEnabler(enableInput string) error {
