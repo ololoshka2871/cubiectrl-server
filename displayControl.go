@@ -4,7 +4,6 @@ import (
 	"os"
 	"errors"
 	"log"
-	"os/exec"
 	"syscall"
 	//"time"
 )
@@ -25,14 +24,14 @@ const (
 	PipeCtrl = "--input-file=" + CmdPipeFile
 )
 
-var PlayerArgsCommon = []string{" ", "--fs", "--loop=inf", "--no-audio"}
+var PlayerArgsCommon = []string{Player, "--fs", "--loop=inf", "--no-audio"}
 
 type tCurrentDisplayState struct {
 	SmallDisplayMode bool
 	BigDisplayMode int
 	
 	SmallDisplayPlayerProcess 	*os.Process
-	BigDisplayPlayerProcess 	*exec.Cmd	
+	BigDisplayPlayerProcess 	*os.Process
 }
 
 var CurrentDisplayState tCurrentDisplayState
@@ -45,9 +44,7 @@ func prepareBigDisplay() error {
 		
 		PlayerArgs := append(PlayerArgsCommon, PipeCtrl)
 		PlayerArgs = append(PlayerArgs, media)
-		CurrentDisplayState.BigDisplayPlayerProcess = exec.Command(Player, PlayerArgs...)
-		CurrentDisplayState.BigDisplayPlayerProcess.Env = append(
-			CurrentDisplayState.BigDisplayPlayerProcess.Env, Big_Display)
+		env := append(os.Environ(), Big_Display)
 
 		/* FIFO */
 		if _, err := os.Stat(CmdPipeFile); !os.IsNotExist(err) {
@@ -58,10 +55,11 @@ func prepareBigDisplay() error {
 		}
 		
 		if err := syscall.Mknod(CmdPipeFile, syscall.S_IFIFO|0666, 0); err == nil {
-			err := CurrentDisplayState.BigDisplayPlayerProcess.Start()
-			if err != nil {
+			if proc, err := os.StartProcess(Player, PlayerArgs, &os.ProcAttr{Env : env}); err != nil {
 				CurrentDisplayState.BigDisplayPlayerProcess = nil
 				return err
+			} else {
+				CurrentDisplayState.BigDisplayPlayerProcess = proc
 			}
 		} else {
 			CurrentDisplayState.BigDisplayPlayerProcess = nil
@@ -141,9 +139,8 @@ func ControlBigDisplay(ctrl int) error {
 			case Diable_bigDisplay:
 				log.Println("Stop player big display")
 				if CurrentDisplayState.BigDisplayPlayerProcess != nil {
-					if err := togglePlayBigDisplay(); err != nil {
-						return err;
-					}
+					CurrentDisplayState.BigDisplayPlayerProcess.Kill()
+					CurrentDisplayState.BigDisplayPlayerProcess = nil
 				}
 
 			case ShowVideo_bigDisplay:
