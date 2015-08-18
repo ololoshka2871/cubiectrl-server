@@ -31,11 +31,13 @@ func NewGpioPin(pin string) (*GpioPin, error) {
 	if err != nil {
 		return nil, err 
 	}
+	defer valueFile.Close()
 
 	directionFile, err := os.OpenFile(direction, os.O_RDWR, 0664)
 	if err != nil {
 		return nil, err
 	}
+	defer directionFile.Close()
  	
 	result := &GpioPin{valueFile, directionFile, false}
 	if dir, err := result.Direction(); err != nil {
