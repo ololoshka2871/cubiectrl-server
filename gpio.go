@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"strings"
 )
 
 type GpioPin struct {
@@ -51,6 +50,8 @@ func NewGpioPin(pin string) (*GpioPin, error) {
 }
 
 func (this *GpioPin) Direction() (bool, error) {
+	
+	this.dirFile.Seek(0, 0)
 	if dirStr, err := ioutil.ReadAll(this.dirFile); err != nil {
 		return false, nil
 	} else {
@@ -93,16 +94,15 @@ func (this *GpioPin) SetValue(val bool) error {
 }
 
 func (this *GpioPin) Value() (bool, error) {
+	this.valueFile.Seek(0, 0)
 	if valStr, err := ioutil.ReadAll(this.valueFile); err != nil {
 		return false, nil
 	} else {
 		s := string(valStr)
-		if strings.Contains(s, "0") {
-			return false, nil;
-		} else if strings.Contains(s, "1") {
-			return true, nil;
-		} else {
-			panic("Unknow value: " + s)
+		switch s {
+			case "0\n" : return false, nil;
+			case "1\n" : return true, nil;
+			default: panic("Unknow value: " + s)
 		}
 	}
 }
