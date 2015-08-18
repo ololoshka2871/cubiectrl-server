@@ -4,6 +4,7 @@ import (
 	"os"
 	"errors"
 	"fmt"
+	"io/ioutil"
 )
 
 type GpioPin struct {
@@ -49,16 +50,14 @@ func NewGpioPin(pin string) (*GpioPin, error) {
 }
 
 func (this *GpioPin) Direction() (bool, error) {
-	var dirStr []byte
-	
-	if _, err := this.dirFile.Read(dirStr); err != nil {
+	if dirStr, err := ioutil.ReadAll(this.dirFile); err != nil {
 		return false, nil
-	}
-	
-	switch string(dirStr) {
-		case "in" : return false, nil;
-		case "out" : return true, nil;
-		default: panic("Unknow direction: " + string(dirStr))
+	} else {
+		switch string(dirStr) {
+			case "in" : return false, nil;
+			case "out" : return true, nil;
+			default: panic("Unknow direction: " + string(dirStr))
+		}
 	}
 }
 
@@ -93,15 +92,13 @@ func (this *GpioPin) SetValue(val bool) error {
 }
 
 func (this *GpioPin) Value() (bool, error) {
-	var dirStr []byte
-	
-	if _, err := this.valueFile.Read(dirStr); err != nil {
+	if valStr, err := ioutil.ReadAll(this.valueFile); err != nil {
 		return false, nil
-	}
-	
-	switch string(dirStr) {
-		case "0" : return false, nil;
-		case "1" : return true, nil;
-		default: panic("Unknow value: " + string(dirStr))
+	} else {
+		switch string(valStr) {
+			case "0" : return false, nil;
+			case "1" : return true, nil;
+			default: panic("Unknow value: " + string(valStr))
+		}
 	}
 }
