@@ -42,6 +42,10 @@ func SetupEnabler(enableInput string) error {
 				return
 			}
 			
+			if prevState {
+				go Started()
+			}
+			
 			for {
 				time.Sleep(Enable_update_interval)
 				v, err = enablePin.Value()
