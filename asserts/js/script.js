@@ -1,6 +1,5 @@
-var data_temp, data_spin
-var plot_temp, plot_spin
-var plot_flow, plot_flow
+var data_temp, data_spin, data_flow
+var plot_temp, plot_spin, plot_flow
 
 var options = {
 		lines: {
