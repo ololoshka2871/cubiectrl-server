@@ -24,9 +24,9 @@ var settingsmap = map[string]interface{} { "SmallDispFileName" : "",
 			"BoudRate" : 57600.0,
 			"RtsPin" : "gpio3_pg8",
 			"UpdateDelay" : 100.0,
-			"EnableInput" : "gpio3_pg10",
-			"SwitchModeInput" : "gpio3_pg11",
-			"FacePlaneCtrlOutput" : "gpio3_pg9",
+			"EnableInput" : "gpio5_pg10",
+			"SwitchModeInput" : "gpio6_pg11",
+			"FacePlaneCtrlOutput" : "gpio4_pg9",
 			"FacePlaneCtrlPeriod" : 1.0,
 			};
 

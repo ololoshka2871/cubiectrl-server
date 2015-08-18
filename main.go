@@ -24,14 +24,17 @@ func main() {
 	}
 	settings = s
 	
-	if err := PreparePulseGenerator(settings.Value("FacePlaneCtrlOutput", "gpio3_pg9").(string)); err != nil {
+	if err := PreparePulseGenerator(settings.Value("FacePlaneCtrlOutput", "gpio4_pg9").(string)); err != nil {
 		panic("Failed to prepare pules generator: " + err.Error())
 	}
 	
-	if err := SetupEnabler(settings.Value("EnableInput", "gpio3_pg10").(string)); err != nil {
+	if err := SetupEnabler(settings.Value("EnableInput", "gpio5_pg10").(string)); err != nil {
 		panic("Failed to start enabler: " + err.Error())
 	} 
 	
+	if err := PrepareModeSwitcher(settings.Value("SwitchModeInput", "gpio6_pg11").(string)); err != nil {
+		panic("Failed to setup mode swither pin " + err.Error())
+	}
 	//StartDefault()
 	
 	log.Println("Starting modbus..")
