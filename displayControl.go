@@ -142,6 +142,7 @@ func ControlBigDisplay(ctrl int) error {
 					CurrentDisplayState.BigDisplayPlayerProcess.Kill()
 					CurrentDisplayState.BigDisplayPlayerProcess = nil
 				}
+				SendValuesCmd("hide")
 
 			case ShowVideo_bigDisplay:
 				log.Println("Start player big display")
