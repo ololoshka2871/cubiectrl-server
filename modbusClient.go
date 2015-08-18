@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/ololoshka2871/go-modbus"
 	"github.com/tarm/serial"
-	"os"
 	"io"
 	"time"
 )
@@ -14,49 +13,25 @@ type ModbusReader interface {
 } 
 
 type RWControlPin struct {
-	valueFile *os.File
+	*GpioPin
 }
 
 func NewRWControlPin(pin string) (*RWControlPin, error) {
-
-	direction := "/sys/class/gpio/" + pin + "/direction"
-	value := "/sys/class/gpio/" + pin + "/value"
-
-	valueFile, err := os.OpenFile(value, os.O_WRONLY, 0664)
-	if err != nil {
+	if result, err := NewGpioPin(pin); err == nil {
+		if err := result.SetDirection(true); err != nil {
+			return nil, err
+		} 
+		return &RWControlPin{result}, nil
+	} else {
 		return nil, err
 	}
-
-	result := &RWControlPin{valueFile}
-
-	directionFile, err := os.OpenFile(direction, os.O_WRONLY, 0664)
-	if err != nil {
-		return nil, err
-	}
-	defer directionFile.Close()
-
-	_, err = directionFile.Write([]byte("out"))
-	if err != nil {
-		return nil, err
-	}
-
-	return result, nil
 }
 
 func (this *RWControlPin) WriteHook(_ io.ReadWriteCloser, newval bool) {
-
-        var txt []byte
-        if newval {
-                txt = []byte("1")
-        } else {
-                txt = []byte("0")
-        }
-
-        _, err := this.valueFile.Write(txt)
-        if err != nil {
-                panic(err)
-        }
-}
+	if err := this.SetValue(newval); err != nil {
+		panic(err.Error())
+	} 
+} 
 
 func StartModbusClient(serialPort string, baudRate int, RTS_Pin string, settings SettingsHolder) (<-chan Cell, error) {
 	ctx, cerr := modbusclient.ConnectRTU(serialPort, baudRate)

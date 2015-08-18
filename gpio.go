@@ -101,7 +101,7 @@ func (this *GpioPin) Value() (bool, error) {
 	
 	switch string(dirStr) {
 		case "0" : return false, nil;
-		case "1" : return false, nil;
+		case "1" : return true, nil;
 		default: panic("Unknow value: " + string(dirStr))
 	}
 }
