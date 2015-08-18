@@ -183,6 +183,10 @@ func ApplySettings(values url.Values) error {
 				if v, e = strconv.Atoi(val); e != nil {
 					v = settingsmap["UpdateDelay"]
 				}
+			case "FacePlaneCtrlPeriod":
+				if v, e = strconv.ParseFloat(val, 10); e != nil {
+					v = settingsmap["FacePlaneCtrlPeriod"]
+				}
 			default:
 				v = val
 		}
