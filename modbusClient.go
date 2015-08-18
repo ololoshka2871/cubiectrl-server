@@ -104,16 +104,16 @@ func BuildCellsTable() []Cell {
 	*/
 	
 	result[0] = Cell{Name : "Cpu_temp1", DevAddr : 31, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0}
-	result[1] = Cell{Name : "Video_temp1", DevAddr : 31, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 2}
+	result[1] = Cell{Name : "flow2", DevAddr : 31, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0x12}
 	
 	result[2] = Cell{Name : "Cpu_temp2", DevAddr : 32, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0}
 	result[3] = Cell{Name : "flow1", DevAddr : 32, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 2}
 	
-	result[4] = Cell{Name : "Video_temp2", DevAddr : 33, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0}
+	result[4] = Cell{Name : "flow2", DevAddr : 33, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0x11}
 	result[5] = Cell{Name : "spin1", DevAddr : 33, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 2}
 	
 	result[6] = Cell{Name : "temp3", DevAddr : 34, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0}
-	result[7] = Cell{Name : "spin2", DevAddr : 34, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 2}
+	result[7] = Cell{Name : "spin2", DevAddr : 34, CellType : InputRegister, CellLen_mbCells : 2, CellStartAddr : 0x12}
 	
 	return result
 }
