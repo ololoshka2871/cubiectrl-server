@@ -38,7 +38,11 @@ type tCurrentDisplayState struct {
 var CurrentDisplayState tCurrentDisplayState
 
 func prepareBigDisplay() error {
-	if media, ok := settings.Value("BigDispFileName", "").(string); ok && media != "" {
+	if media, ok := settings.Value("BigDispFileName", "").(string); ok {
+		if media == "" {
+			return nil
+		}
+		
 		PlayerArgs := append(PlayerArgsCommon, PipeCtrl)
 		PlayerArgs = append(PlayerArgs, media)
 		CurrentDisplayState.BigDisplayPlayerProcess = exec.Command(Player, PlayerArgs...)
