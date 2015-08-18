@@ -28,7 +28,11 @@ func main() {
 		panic("Failed to prepare pules generator: " + err.Error())
 	}
 	
-	StartDefault()
+	if err := SetupEnabler(settings.Value("EnableInput", "gpio3_pg10").(string)); err != nil {
+		panic("Failed to start enabler: " + err.Error())
+	} 
+	
+	//StartDefault()
 	
 	log.Println("Starting modbus..")
 	port, ok1 := settings.Value("Port", "/dev/ttyS0").(string)
