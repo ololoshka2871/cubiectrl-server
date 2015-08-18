@@ -24,6 +24,10 @@ func main() {
 	}
 	settings = s
 	
+	if err := PreparePulseGenerator(settings.Value("FacePlaneCtrlOutput", "gpio3_pg9").(string)); err != nil {
+		panic("Failed to prepare pules generator: " + err.Error())
+	}
+	
 	StartDefault()
 	
 	log.Println("Starting modbus..")

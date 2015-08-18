@@ -26,7 +26,7 @@ var settingsmap = map[string]interface{} { "SmallDispFileName" : "",
 			"UpdateDelay" : 100.0,
 			"EnableInput" : "gpio3_pg10",
 			"SwitchModeInput" : "gpio3_pg11",
-			"FacePlaneCtrlOutput" : "gpio3_pg89",
+			"FacePlaneCtrlOutput" : "gpio3_pg9",
 			"FacePlaneCtrlPeriod" : 1.0,
 			};
 
