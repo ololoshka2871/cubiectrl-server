@@ -45,6 +45,7 @@ func PrepareModeSwitcher(pin string) error {
 							}
 						}
 					}
+					prevState = v
 				}
 			}
 		}()

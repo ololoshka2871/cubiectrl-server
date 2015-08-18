@@ -58,6 +58,7 @@ func SetupEnabler(enableInput string) error {
 							go Stopped()
 						}
 					}
+					prevState = v
 				}
 			}
 		}()
